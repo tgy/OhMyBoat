@@ -24,7 +24,6 @@ namespace OhMyBoat
 
         protected override void Initialize()
         {
-
             base.Initialize();
         }
 
