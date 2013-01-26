@@ -8,8 +8,7 @@ namespace OhMyBoat.IO
 {
     public class Reader : BinaryReader
     {
-        public Reader(Stream stream)
-            : base(stream)
+        public Reader(Stream stream) : base(stream)
         {
         }
     }

@@ -8,8 +8,7 @@ namespace OhMyBoat.IO
 {
     public class Writer : BinaryWriter
     {
-        public Writer(Stream stream)
-            : base(stream)
+        public Writer(Stream stream) : base(stream)
         {
         }
     }
