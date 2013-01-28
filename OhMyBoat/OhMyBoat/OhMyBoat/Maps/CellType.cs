@@ -10,6 +10,7 @@ namespace OhMyBoat.Maps
         Water,
         HiddenBoat,
         BurningBoat,
-        DestroyedBoat
+        DestroyedBoat,
+        Error
     }
 }

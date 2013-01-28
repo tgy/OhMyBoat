@@ -14,43 +14,34 @@ namespace OhMyBoat.Maps
 {
     class Cell
     {
-        private enum State
-        {
-            Water,
-            HiddenBoat,
-            BurningBoat,
-            DestroyedBoat,
-            Error
-        }
+        public CellType Type;
 
-        public State state;
+        public Vector2 Position;
 
-        public Vector2 position;
+        public Texture2D Texture;
 
-        public Texture2D texture;
-
-        public Rectangle area;
+        public Rectangle Area;
 
         public Cell(int x, int y, byte b)
         {
-            this.position = new Vector2(x, y);
-            this.state = StateFromByte(b);
+            this.Position = new Vector2(x, y);
+            this.Type = TypeFromByte(b);
         }
 
-        public State StateFromByte(byte b)
+        public CellType TypeFromByte(byte b)
         {
             switch (b)
             {
                 case 0:
-                    return State.Water;
+                    return CellType.Water;
                 case 1:
-                    return State.HiddenBoat;
+                    return CellType.HiddenBoat;
                 case 2:
-                    return State.BurningBoat;
+                    return CellType.BurningBoat;
                 case 3:
-                    return State.DestroyedBoat;
+                    return CellType.DestroyedBoat;
                 default:
-                    return State.Error;
+                    return CellType.Error;
             }
         }
     }

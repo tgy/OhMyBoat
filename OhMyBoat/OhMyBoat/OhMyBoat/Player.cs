@@ -21,28 +21,5 @@ namespace OhMyBoat
             Name = name;
             PlayerMap = map;
         }
-
-        /// <summary>
-        /// Serialize the current player in a stream
-        /// </summary>
-        /// <param name="w">Stream writer</param>
-        public void Serialize(Writer w)
-        {
-            w.Write(Name);
-            PlayerMap.Serialize(w);
-        }
-
-        /// <summary>
-        /// Deserialize a player from a stream
-        /// </summary>
-        /// <param name="r">Stream reader</param>
-        /// <returns></returns>
-        public static Player Deserialize(Reader r)
-        {
-            string name = r.ReadString();
-            Map map = Map.Deserialize(r);
-
-            return new Player(name, map);
-        }
     }
 }
