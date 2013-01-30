@@ -107,10 +107,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GameDatas.cs" />
     <Compile Include="IO\Writer.cs" />
     <Compile Include="IO\Reader.cs" />
-    <Compile Include="Maps\Cell.cs" />
-    <Compile Include="Maps\CellType.cs" />
+    <Compile Include="Maps\CellState.cs" />
     <Compile Include="Maps\Map.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Player.cs" />
