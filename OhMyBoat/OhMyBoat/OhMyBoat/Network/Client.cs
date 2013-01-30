@@ -24,6 +24,8 @@ namespace OhMyBoat.Network
         {
             _client = client;
             Connected = true;
+
+            new System.Threading.Tasks.Task(Receive).Start();
         }
 
         void Receive()
