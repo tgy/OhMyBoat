@@ -37,19 +37,30 @@ namespace OhMyBoat
             IsMouseVisible = true;
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            //////////////////////////////////////////////////////////
+
+            GameDatas.GridTexture = Content.Load<Texture2D>("Grid");
+
+            GameDatas.CellsTextures = new[]
+                {
+                    Content.Load<Texture2D>("WaterHidden"),
+                    Content.Load<Texture2D>("Water"),
+                    Content.Load<Texture2D>("BoatHidden"),
+                    Content.Load<Texture2D>("BoatBurning"),
+                    Content.Load<Texture2D>("BoatDestroyed")
+                };
+
+            _graphics.PreferredBackBufferWidth = GameDatas.GridTexture.Width * 2 + 50;
+            _graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 200;
             _graphics.ApplyChanges();
 
             //////////////////////////////////////////////////////////
 
-            _player1 = new Player("Toogy", Map.Generate());
-            _player1.Map.Load(Content);
-            _player1.Map.SetPosition(Window.ClientBounds.Width / 2 - 438, (Window.ClientBounds.Height - 438) / 2);
+            _player1 = new Player("Toogy");
+            _player1.Map.SetPosition(Window.ClientBounds.Width / 2 - GameDatas.GridSize, (Window.ClientBounds.Height - GameDatas.GridSize) / 2);
 
-            _player2 = new Player("NeodyBlue", Map.Generate());
-            _player2.Map.Load(Content);
-            _player2.Map.SetPosition(Window.ClientBounds.Width / 2, (Window.ClientBounds.Height - 438) / 2);
+            _player2 = new Player("NeodyBlue");
+            _player2.Map.SetPosition(Window.ClientBounds.Width / 2, (Window.ClientBounds.Height - GameDatas.GridSize) / 2);
 
             //////////////////////////////////////////////////////////
 
@@ -74,7 +85,12 @@ namespace OhMyBoat
             if (GameDatas.MouseState.LeftButton == ButtonState.Released &&
                 GameDatas.PreviousMouseState.LeftButton == ButtonState.Pressed)
             {
-                
+                if (_player2.Map.Area.Contains(GameDatas.MouseState.X, GameDatas.MouseState.Y))
+                {
+                    var x = (GameDatas.MouseState.X - _player2.Map.X - GameDatas.GridPadding) / GameDatas.CellSize;
+                    var y = (GameDatas.MouseState.Y - _player2.Map.Y - GameDatas.GridPadding) / GameDatas.CellSize;
+                    _player2.Play(y, x);
+                }
             }
 
             GameDatas.PreviousKeyboardState = GameDatas.KeyboardState;

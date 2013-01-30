@@ -14,8 +14,15 @@ namespace OhMyBoat
 {
     static class GameDatas
     {
-        public static int WindowWidth;
-        public static int WindowHeight;
+        static public int WindowWidth;
+        static public int WindowHeight;
+
+        static public Texture2D[] CellsTextures;
+        public static Texture2D GridTexture;
+
+        public const int CellSize = 40;
+        public const int GridPadding = 19;
+        public const int GridSize = CellSize * 10 + GridPadding * 2;
 
         static public MouseState MouseState;
         static public MouseState PreviousMouseState;
