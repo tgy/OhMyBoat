@@ -28,12 +28,12 @@ namespace OhMyBoat.Maps
             Datas = d;
         }
 
-        public void SetPosition(int X, int Y)
+        public void SetPosition(int x, int y)
         {
-            this.X = X;
-            this.Y = Y;
+            X = x;
+            Y = y;
 
-            Area = new Rectangle(X + GameDatas.GridPadding, Y + GameDatas.GridPadding, GameDatas.GridSize - 2*GameDatas.GridPadding, GameDatas.GridSize - 2*GameDatas.GridPadding);
+            Area = new Rectangle(x + GameDatas.GridPadding, y + GameDatas.GridPadding, GameDatas.GridSize - 2*GameDatas.GridPadding, GameDatas.GridSize - 2*GameDatas.GridPadding);
         }
 
         public void Draw(SpriteBatch spriteBatch, bool show)
@@ -70,11 +70,8 @@ namespace OhMyBoat.Maps
         static public Map Generate()
         {
             var datas = new byte[10, 10];
-
             var boats = new List<int> {7, 5, 3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2};
-
             var vertical = false;
-
             foreach (var boat in boats)
             {
                 #region tests
@@ -210,9 +207,7 @@ namespace OhMyBoat.Maps
         static private byte Random10()
         {
             var b = new byte[1];
-
             new System.Security.Cryptography.RNGCryptoServiceProvider().GetBytes(b);
-
             return (byte) (b[0] % 10);
         }
 

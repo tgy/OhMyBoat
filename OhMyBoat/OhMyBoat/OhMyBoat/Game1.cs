@@ -78,9 +78,9 @@ namespace OhMyBoat
 
         protected override void Update(GameTime gameTime)
         {
-            if (GameDatas.PreviousKeyboardState.IsKeyDown(Keys.F11) &&
+            /* if (GameDatas.PreviousKeyboardState.IsKeyDown(Keys.F11) &&
                 GameDatas.KeyboardState.IsKeyUp(Keys.F11))
-                _graphics.ToggleFullScreen();
+                _graphics.ToggleFullScreen(); */
 
             if (GameDatas.MouseState.LeftButton == ButtonState.Released &&
                 GameDatas.PreviousMouseState.LeftButton == ButtonState.Pressed)
