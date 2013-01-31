@@ -42,8 +42,8 @@ namespace OhMyBoat
 
         public bool IsOver()
         {
-            for (var i = 0; i < 10; i++)
-                for (var j = 0; j < 10; j++)
+            for (var i = 0; i < GameDatas.CellsNumber; i++)
+                for (var j = 0; j < GameDatas.CellsNumber; j++)
                     if (Map.Datas[i, j] == (byte) CellState.BoatHidden)
                         return false;
 
@@ -74,7 +74,7 @@ namespace OhMyBoat
 
         public bool Sink(int x, int y, int dirx, int diry)
         {
-            return (x < 0 || y < 0 || x > 9 || y > 9 || Map.Datas[x, y] == (byte)CellState.WaterHidden || Map.Datas[x, y] == (byte)CellState.Water) || (Map.Datas[x, y] == (byte)CellState.BoatBurning && Sink(x + dirx, y + diry, dirx, diry));
+            return (x < 0 || y < 0 || x > (GameDatas.CellsNumber - 1) || y > (GameDatas.CellsNumber - 1) || Map.Datas[x, y] == (byte)CellState.WaterHidden || Map.Datas[x, y] == (byte)CellState.Water) || (Map.Datas[x, y] == (byte)CellState.BoatBurning && Sink(x + dirx, y + diry, dirx, diry));
         }
 
         public void Achieve(int x, int y)
@@ -88,19 +88,20 @@ namespace OhMyBoat
 
         public bool Achieve(int x, int y, int dirx, int diry)
         {
-            if (x < 0 || y < 0 || x > 9 || y > 9 || Map.Datas[x, y] == (byte)CellState.WaterHidden || Map.Datas[x, y] == (byte)CellState.Water)
+            if (x < 0 || y < 0 || x > (GameDatas.CellsNumber - 1) || y > (GameDatas.CellsNumber - 1) || Map.Datas[x, y] == (byte)CellState.WaterHidden || Map.Datas[x, y] == (byte)CellState.Water)
             {
                 return true;
             }
 
             if (Map.Datas[x, y] == (byte) CellState.BoatBurning && (dirx == diry || Achieve(x + dirx, y + diry, dirx, diry)))
             {
+                Map.Datas[x, y] = (byte) CellState.BoatDestroyed;
                 if (x - 1 >= 0 && Map.Datas[x - 1, y] == (byte) CellState.WaterHidden)
                 {
                     Map.Datas[x - 1, y] = (byte) CellState.Water;
                 }
 
-                if (x + 1 < 10 && Map.Datas[x + 1, y] == (byte)CellState.WaterHidden)
+                if (x + 1 < GameDatas.CellsNumber && Map.Datas[x + 1, y] == (byte)CellState.WaterHidden)
                 {
                     Map.Datas[x + 1, y] = (byte) CellState.Water;
                 }
@@ -110,7 +111,7 @@ namespace OhMyBoat
                     Map.Datas[x, y - 1] = (byte) CellState.Water;
                 }
 
-                if (y + 1 < 10 && Map.Datas[x, y + 1] == (byte)CellState.WaterHidden)
+                if (y + 1 < GameDatas.CellsNumber && Map.Datas[x, y + 1] == (byte)CellState.WaterHidden)
                 {
                     Map.Datas[x, y + 1] = (byte) CellState.Water;
                 }

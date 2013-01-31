@@ -23,6 +23,7 @@ namespace OhMyBoat
         public const int CellSize = 40;
         public const int GridPadding = 19;
         public const int GridSize = CellSize * 10 + GridPadding * 2;
+        public const int CellsNumber = 10;
 
         static public MouseState MouseState;
         static public MouseState PreviousMouseState;

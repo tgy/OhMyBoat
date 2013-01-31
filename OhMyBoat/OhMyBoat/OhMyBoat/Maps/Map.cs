@@ -43,8 +43,8 @@ namespace OhMyBoat.Maps
             var x = X + GameDatas.GridPadding;
             var y = Y + GameDatas.GridPadding;
 
-            for (var i = 0; i < 10; i++)
-                for (var j = 0; j < 10; j++)
+            for (var i = 0; i < GameDatas.CellsNumber; i++)
+                for (var j = 0; j < GameDatas.CellsNumber; j++)
                 {
                     if (show)
                     {
@@ -69,8 +69,8 @@ namespace OhMyBoat.Maps
 
         static public Map Generate()
         {
-            var datas = new byte[10, 10];
-            var boats = new List<int> {7, 5, 3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 2};
+            var datas = new byte[GameDatas.CellsNumber, GameDatas.CellsNumber];
+            var boats = new List<int> {5, 4, 4, 3, 3, 3, 2, 2, 2, 1, 1, 1, 1};
             var vertical = false;
             foreach (var boat in boats)
             {
@@ -85,8 +85,8 @@ namespace OhMyBoat.Maps
                     do
                     {
                         ok = true;
-                        x = Random10();
-                        y = Random10();
+                        x = RandomCell();
+                        y = RandomCell();
 
                         if (datas[x, y] == (byte) CellState.BoatHidden)
                         {
@@ -96,18 +96,18 @@ namespace OhMyBoat.Maps
 
                         for (var i = x - 1; i < x + boat + 1; i++)
                         {
-                            if (i < 0 || i > 9)
+                            if (i < 0 || i > (GameDatas.CellsNumber - 1))
                                 continue;
 
                             if (datas[i, y] == (byte)CellState.BoatHidden)
                                 ok = false;
                         }
 
-                        if (y - 1 >= 0 && y - 1 <= 9)
+                        if (y - 1 >= 0 && y - 1 < GameDatas.CellsNumber)
                         {
                             for (var i = x; i < x + boat; i++)
                             {
-                                if (i < 0 || i > 9)
+                                if (i < 0 || i > (GameDatas.CellsNumber - 1))
                                     continue;
 
                                 if (datas[i, y - 1] == (byte)CellState.BoatHidden)
@@ -115,11 +115,11 @@ namespace OhMyBoat.Maps
                             }
                         }
 
-                        if (y + 1 >= 0 && y + 1 <= 9)
+                        if (y + 1 >= 0 && y + 1 < GameDatas.CellsNumber)
                         {
                             for (var i = x; i < x + boat; i++)
                             {
-                                if (i < 0 || i > 9)
+                                if (i < 0 || i > (GameDatas.CellsNumber - 1))
                                     continue;
 
                                 if (datas[i, y + 1] == (byte)CellState.BoatHidden)
@@ -127,7 +127,7 @@ namespace OhMyBoat.Maps
                             }
                         }
 
-                    } while (x + boat - 1 >= 10 || !ok);
+                    } while (x + boat - 1 >= GameDatas.CellsNumber || !ok);
                     
                     for (var i = x; i < x + boat; i++)
                     {
@@ -142,8 +142,8 @@ namespace OhMyBoat.Maps
                     do
                     {
                         ok = true;
-                        x = Random10();
-                        y = Random10();
+                        x = RandomCell();
+                        y = RandomCell();
 
                         if (datas[x, y] == (byte) CellState.BoatHidden)
                         {
@@ -153,19 +153,19 @@ namespace OhMyBoat.Maps
 
                         for (var i = y - 1; i < y + boat + 1; i++)
                         {
-                            if (i < 0 || i > 9)
+                            if (i < 0 || i > (GameDatas.CellsNumber - 1))
                                 continue;
 
                             if (datas[x, i] == (byte)CellState.BoatHidden)
                                 ok = false;
                         }
 
-                        if (x - 1 >= 0 && x - 1 <= 9)
+                        if (x - 1 >= 0 && x - 1 < GameDatas.CellsNumber)
                         {
 
                             for (var i = y; i < y + boat; i++)
                             {
-                                if (i < 0 || i > 9)
+                                if (i < 0 || i > (GameDatas.CellsNumber - 1))
                                     continue;
 
                                 if (datas[x - 1, i] == (byte)CellState.BoatHidden)
@@ -174,12 +174,12 @@ namespace OhMyBoat.Maps
 
                         }
 
-                        if (x + 1 >= 0 && x + 1 <= 9)
+                        if (x + 1 >= 0 && x + 1 < GameDatas.CellsNumber)
                         {
 
                             for (var i = y; i < y + boat; i++)
                             {
-                                if (i < 0 || i > 9)
+                                if (i < 0 || i > (GameDatas.CellsNumber - 1))
                                     continue;
 
                                 if (datas[x + 1, i] == (byte)CellState.BoatHidden)
@@ -188,7 +188,7 @@ namespace OhMyBoat.Maps
 
                         }
 
-                    } while (y + boat - 1 >= 10 || !ok);
+                    } while (y + boat - 1 >= GameDatas.CellsNumber || !ok);
 
                     for (var i = y; i < y + boat; i++)
                     {
@@ -204,11 +204,11 @@ namespace OhMyBoat.Maps
             return new Map(datas);
         }
         
-        static private byte Random10()
+        static private byte RandomCell()
         {
             var b = new byte[1];
             new System.Security.Cryptography.RNGCryptoServiceProvider().GetBytes(b);
-            return (byte) (b[0] % 10);
+            return (byte) (b[0] % GameDatas.CellsNumber);
         }
 
     }
