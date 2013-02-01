@@ -10,7 +10,7 @@ namespace OhMyBoat
         /// </summary>
         static void Main(string[] args)
         {
-            using (var game = new Application())
+            using (var game = new Application(true))
             {
                 game.Run();
             }

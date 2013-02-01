@@ -11,14 +11,15 @@ namespace OhMyBoat.Network
     {
         private readonly TcpListener _listener;
 
-        public Server(string ip, int port)
+        public Server()
         {
-            _listener = new TcpListener(IPAddress.Parse(ip), port);
+            _listener = new TcpListener(Dns.GetHostAddresses(Dns.GetHostName())[3], 4242);
         }
 
-        public void StartListening()
+        public Client AcceptClient()
         {
-            new Client(_listener.AcceptTcpClient());
+            _listener.Start();
+            return new Client(_listener.AcceptTcpClient());
         }
     }
 }

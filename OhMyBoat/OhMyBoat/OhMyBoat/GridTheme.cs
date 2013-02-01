@@ -21,15 +21,15 @@ namespace OhMyBoat
         public Texture2D[] CellsTextures;
         public Texture2D GridTexture, AimTexture, LogoTexture;
 
-        public int CellsNumber, CellSize, GridPadding, GridSize, AimPadding;
+        public short CellsNumber, CellSize, GridPadding, GridSize, AimPadding;
 
-        public GridTheme(string name, int cellsNumber, int cellSize, int gridPadding, int aimPadding)
+        public GridTheme(string name, short cellsNumber, short cellSize, short gridPadding, short aimPadding)
         {
             Name = name;
             CellsNumber = cellsNumber;
             CellSize = cellSize;
             GridPadding = gridPadding;
-            GridSize = cellSize*CellsNumber + gridPadding*2;
+            GridSize = (short) (cellSize*CellsNumber + gridPadding*2);
             AimPadding = aimPadding;
         }
 

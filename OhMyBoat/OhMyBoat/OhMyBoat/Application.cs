@@ -10,22 +10,34 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using OhMyBoat.Maps;
 using OhMyBoat.Menu;
+using OhMyBoat.Network;
+using System.Net.Sockets;
 
 namespace OhMyBoat
 {
-    public class Application : Microsoft.Xna.Framework.Game
+    public class Application : Game
     {
         readonly GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
+        private Client _client;
 
         private Stack<GameState> _gameStates; 
 
-        public Application()
+        public Application(bool isServer, string serverIp = "")
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
             Window.Title = "Oh My Boat! What a ballzy boat!";
+
+            if (isServer)
+                _client = new Server().AcceptClient();
+            else
+            {
+                var client = new TcpClient();
+                client.Connect(serverIp, 4242);
+                _client = new Client(client);
+            }
         }
 
         protected override void Initialize()

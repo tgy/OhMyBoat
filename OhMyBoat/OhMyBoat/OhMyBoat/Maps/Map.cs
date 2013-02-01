@@ -17,8 +17,6 @@ namespace OhMyBoat.Maps
     {
         public byte[,] Datas;
 
-        public int Size;
-
         public int X, Y;
 
         public Point Aim;
