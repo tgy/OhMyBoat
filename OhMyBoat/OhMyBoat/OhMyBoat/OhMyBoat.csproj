@@ -109,7 +109,7 @@
   <ItemGroup>
     <Compile Include="GameDatas.cs" />
     <Compile Include="GameState.cs" />
-    <Compile Include="GridTheme.cs" />
+    <Compile Include="Theme.cs" />
     <Compile Include="IO\Writer.cs" />
     <Compile Include="IO\Reader.cs" />
     <Compile Include="Maps\CellState.cs" />
@@ -118,9 +118,13 @@
     <Compile Include="Menu\MenuItem.cs" />
     <Compile Include="Menu\MenuItems\MenuTextBox.cs" />
     <Compile Include="Menu\MenuState.cs" />
+    <Compile Include="Network\Packets\BasePacket.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Packet.cs" />
     <Compile Include="Network\PacketHeader.cs" />
+    <Compile Include="Network\Packets\BasicsDatasPacket.cs" />
+    <Compile Include="Network\Parser.cs" />
+    <Compile Include="Network\Server.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

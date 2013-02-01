@@ -10,22 +10,39 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using OhMyBoat.Maps;
 using OhMyBoat.Menu;
+using OhMyBoat.Network;
+using System.Net.Sockets;
 
 namespace OhMyBoat
 {
-    public class Application : Microsoft.Xna.Framework.Game
+    public class Application : Game
     {
         readonly GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
+        private Client _client;
 
         private Stack<GameState> _gameStates; 
 
-        public Application()
+        public Application(bool isServer, string serverIp = "")
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
             Window.Title = "Oh My Boat! What a ballzy boat!";
+
+            if (isServer)
+                _client = new Server().AcceptClient();
+            /*else
+            {
+                var client = new TcpClient();
+                client.Connect(serverIp, 4242);
+                _client = new Client(client);
+            }*/
+        }
+
+        protected override void Initialize()
+        {
+            base.Initialize();
         }
 
         protected override void LoadContent()
@@ -38,14 +55,14 @@ namespace OhMyBoat
 
             //////////////////////////////////////////////////////////
 
-            GameDatas.GridTheme = new GridTheme("PinkTheme", 10, 40, 17, 3);
+            GameDatas.Theme = new Theme("PinkTheme", 10, 40, 17, 3);
             
-            GameDatas.GridTheme.Load(Content);
+            GameDatas.Theme.Load(Content);
 
             //////////////////////////////////////////////////////////
 
-            _graphics.PreferredBackBufferWidth = GameDatas.GridTheme.GridTexture.Width * 2 + 50;
-            _graphics.PreferredBackBufferHeight = GameDatas.GridTheme.GridTexture.Height + GameDatas.GridTheme.LogoTexture.Height + 50;
+            _graphics.PreferredBackBufferWidth = GameDatas.Theme.GridTexture.Width * 2 + 50;
+            _graphics.PreferredBackBufferHeight = GameDatas.Theme.GridTexture.Height + GameDatas.Theme.LogoTexture.Height + 50;
             _graphics.ApplyChanges();
 
             GameDatas.WindowWidth = Window.ClientBounds.Width;
@@ -58,6 +75,11 @@ namespace OhMyBoat
             _gameStates.Push(playState);
             _gameStates.Peek().Initialize();
             _gameStates.Peek().LoadContent();
+        }
+
+        protected override void UnloadContent()
+        {
+            
         }
 
         protected override void Update(GameTime gameTime)

@@ -24,7 +24,7 @@ namespace OhMyBoat
         static public KeyboardState KeyboardState;
         static public KeyboardState PreviousKeyboardState;
 
-        public static GridTheme GridTheme;
+        public static Theme Theme;
         public static Vector2 ReturnFontPosition;
 
         public const byte MapPeriod = 9;

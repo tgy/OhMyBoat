@@ -19,12 +19,12 @@ namespace OhMyBoat
         public override void LoadContent()
         {
             _player1 = new Player("Toogy");
-            _player1.Map.SetPosition(GameDatas.WindowWidth/2 - GameDatas.GridTheme.GridSize,
-                                        GameDatas.WindowHeight - GameDatas.GridTheme.GridSize - 25);
+            _player1.Map.SetPosition(GameDatas.WindowWidth/2 - GameDatas.Theme.GridSize,
+                                        GameDatas.WindowHeight - GameDatas.Theme.GridSize - 25);
 
             _player2 = new Player("NeodyBlue");
             _player2.Map.SetPosition(GameDatas.WindowWidth/2,
-                                        GameDatas.WindowHeight - GameDatas.GridTheme.GridSize - 25);
+                                        GameDatas.WindowHeight - GameDatas.Theme.GridSize - 25);
         }
 
         public override void Update(GameTime gameTime)
@@ -46,7 +46,9 @@ namespace OhMyBoat
             _player1.Update();
             _player2.Update();
 
-            if ((GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Enter) && GameDatas.KeyboardState.IsKeyUp(Keys.Enter)) || (!GameDatas.KeyboardFocus && GameDatas.MouseState.LeftButton == ButtonState.Released && GameDatas.PreviousMouseState.LeftButton == ButtonState.Pressed))
+            if ((GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Enter) && GameDatas.KeyboardState.IsKeyUp(Keys.Enter)) ||
+                (!GameDatas.KeyboardFocus && GameDatas.MouseState.LeftButton == ButtonState.Released &&
+                 GameDatas.PreviousMouseState.LeftButton == ButtonState.Pressed))
             {
                 _player2.Play(_player2.Map.Aim.Y, _player2.Map.Aim.X);
             }
@@ -54,7 +56,10 @@ namespace OhMyBoat
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(GameDatas.GridTheme.LogoTexture, new Rectangle((GameDatas.WindowWidth - GameDatas.GridTheme.LogoTexture.Width) / 2, 15, GameDatas.GridTheme.LogoTexture.Width, GameDatas.GridTheme.LogoTexture.Height), Color.White);
+            spriteBatch.Draw(GameDatas.Theme.LogoTexture,
+                             new Rectangle((GameDatas.WindowWidth - GameDatas.Theme.LogoTexture.Width)/2, 15,
+                                           GameDatas.Theme.LogoTexture.Width, GameDatas.Theme.LogoTexture.Height),
+                             Color.White);
 
             _player1.Map.Draw(spriteBatch, true);
             _player2.Map.Draw(spriteBatch, false);

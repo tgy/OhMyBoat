@@ -22,7 +22,9 @@ namespace OhMyBoat
 
         public Map Map { get; set; }
 
-        public Player(string name) : this(name, Map.Generate()) { }
+        public Player(string name) : this(name, Map.Generate())
+        {
+        }
 
         public Player(string name, Map map)
         {
@@ -53,30 +55,30 @@ namespace OhMyBoat
             if (GameDatas.KeyboardFocus)
             {
                 if (GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Left) &&
-                     (GameDatas.KeyboardState.IsKeyUp(Keys.Left) || Map.AimPeriod == GameDatas.MapPeriod))
+                    (GameDatas.KeyboardState.IsKeyUp(Keys.Left) || Map.AimPeriod == GameDatas.MapPeriod))
                 {
-                    Map.Aim.X = (Map.Aim.X - 1) < 0 ? (GameDatas.GridTheme.CellsNumber - 1) : (Map.Aim.X - 1);
+                    Map.Aim.X = (Map.Aim.X - 1) < 0 ? (GameDatas.Theme.CellsNumber - 1) : (Map.Aim.X - 1);
                     Map.AimPeriod = 0;
                 }
 
                 if (GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Right) &&
-                     (GameDatas.KeyboardState.IsKeyUp(Keys.Right) || Map.AimPeriod == GameDatas.MapPeriod))
+                    (GameDatas.KeyboardState.IsKeyUp(Keys.Right) || Map.AimPeriod == GameDatas.MapPeriod))
                 {
-                    Map.Aim.X = (Map.Aim.X + 1) > (GameDatas.GridTheme.CellsNumber - 1) ? 0 : (Map.Aim.X + 1);
+                    Map.Aim.X = (Map.Aim.X + 1) > (GameDatas.Theme.CellsNumber - 1) ? 0 : (Map.Aim.X + 1);
                     Map.AimPeriod = 0;
                 }
 
                 if (GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Up) &&
-                     (GameDatas.KeyboardState.IsKeyUp(Keys.Up) || Map.AimPeriod == GameDatas.MapPeriod))
+                    (GameDatas.KeyboardState.IsKeyUp(Keys.Up) || Map.AimPeriod == GameDatas.MapPeriod))
                 {
-                    Map.Aim.Y = (Map.Aim.Y - 1) < 0 ? (GameDatas.GridTheme.CellsNumber - 1) : (Map.Aim.Y - 1);
+                    Map.Aim.Y = (Map.Aim.Y - 1) < 0 ? (GameDatas.Theme.CellsNumber - 1) : (Map.Aim.Y - 1);
                     Map.AimPeriod = 0;
                 }
 
                 if (GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Down) &&
-                     (GameDatas.KeyboardState.IsKeyUp(Keys.Down) || Map.AimPeriod == GameDatas.MapPeriod))
+                    (GameDatas.KeyboardState.IsKeyUp(Keys.Down) || Map.AimPeriod == GameDatas.MapPeriod))
                 {
-                    Map.Aim.Y = (Map.Aim.Y + 1) > (GameDatas.GridTheme.CellsNumber - 1) ? 0 : (Map.Aim.Y + 1);
+                    Map.Aim.Y = (Map.Aim.Y + 1) > (GameDatas.Theme.CellsNumber - 1) ? 0 : (Map.Aim.Y + 1);
                     Map.AimPeriod = 0;
                 }
 
@@ -89,16 +91,16 @@ namespace OhMyBoat
             {
                 if (Map.Area.Contains(GameDatas.MouseState.X, GameDatas.MouseState.Y))
                 {
-                    Map.Aim.X = (GameDatas.MouseState.X - Map.X - GameDatas.GridTheme.GridPadding) / GameDatas.GridTheme.CellSize;
-                    Map.Aim.Y = (GameDatas.MouseState.Y - Map.Y - GameDatas.GridTheme.GridPadding) / GameDatas.GridTheme.CellSize;
+                    Map.Aim.X = (GameDatas.MouseState.X - Map.X - GameDatas.Theme.GridPadding)/GameDatas.Theme.CellSize;
+                    Map.Aim.Y = (GameDatas.MouseState.Y - Map.Y - GameDatas.Theme.GridPadding)/GameDatas.Theme.CellSize;
                 }
             }
         }
 
         public bool IsOver()
         {
-            for (var i = 0; i < GameDatas.GridTheme.CellsNumber; i++)
-                for (var j = 0; j < GameDatas.GridTheme.CellsNumber; j++)
+            for (var i = 0; i < GameDatas.Theme.CellsNumber; i++)
+                for (var j = 0; j < GameDatas.Theme.CellsNumber; j++)
                     if (Map.Datas[i, j] == (byte) CellState.BoatHidden)
                         return false;
 
@@ -109,13 +111,13 @@ namespace OhMyBoat
         {
             switch (Map.Datas[x, y])
             {
-                case (byte)CellState.BoatHidden:
+                case (byte) CellState.BoatHidden:
                     Shots++;
-                    Map.Datas[x, y] = (byte)CellState.BoatBurning;
+                    Map.Datas[x, y] = (byte) CellState.BoatBurning;
                     return true;
-                case (byte)CellState.WaterHidden:
+                case (byte) CellState.WaterHidden:
                     Shots++;
-                    Map.Datas[x, y] = (byte)CellState.Water;
+                    Map.Datas[x, y] = (byte) CellState.Water;
                     return false;
                 default:
                     return false;
@@ -129,7 +131,9 @@ namespace OhMyBoat
 
         public bool Sink(int x, int y, int dirx, int diry)
         {
-            return (x < 0 || y < 0 || x > (GameDatas.GridTheme.CellsNumber - 1) || y > (GameDatas.GridTheme.CellsNumber - 1) || Map.Datas[x, y] == (byte)CellState.WaterHidden || Map.Datas[x, y] == (byte)CellState.Water) || (Map.Datas[x, y] == (byte)CellState.BoatBurning && Sink(x + dirx, y + diry, dirx, diry));
+            return (x < 0 || y < 0 || x > (GameDatas.Theme.CellsNumber - 1) || y > (GameDatas.Theme.CellsNumber - 1) ||
+                    Map.Datas[x, y] == (byte) CellState.WaterHidden || Map.Datas[x, y] == (byte) CellState.Water) ||
+                   (Map.Datas[x, y] == (byte) CellState.BoatBurning && Sink(x + dirx, y + diry, dirx, diry));
         }
 
         public void Achieve(int x, int y)
@@ -143,25 +147,27 @@ namespace OhMyBoat
 
         public bool Achieve(int x, int y, int dirx, int diry)
         {
-            if (x < 0 || y < 0 || x > (GameDatas.GridTheme.CellsNumber - 1) || y > (GameDatas.GridTheme.CellsNumber - 1) || Map.Datas[x, y] == (byte)CellState.WaterHidden || Map.Datas[x, y] == (byte)CellState.Water)
+            if (x < 0 || y < 0 || x > (GameDatas.Theme.CellsNumber - 1) || y > (GameDatas.Theme.CellsNumber - 1) ||
+                Map.Datas[x, y] == (byte) CellState.WaterHidden || Map.Datas[x, y] == (byte) CellState.Water)
             {
                 return true;
             }
 
-            if (Map.Datas[x, y] == (byte) CellState.BoatBurning && (dirx == diry || Achieve(x + dirx, y + diry, dirx, diry)))
+            if (Map.Datas[x, y] == (byte) CellState.BoatBurning &&
+                (dirx == diry || Achieve(x + dirx, y + diry, dirx, diry)))
             {
                 Map.Datas[x, y] = (byte) CellState.BoatDestroyed;
 
                 if (x - 1 >= 0 && Map.Datas[x - 1, y] == (byte) CellState.WaterHidden)
                     Map.Datas[x - 1, y] = (byte) CellState.Water;
 
-                if (x + 1 < GameDatas.GridTheme.CellsNumber && Map.Datas[x + 1, y] == (byte)CellState.WaterHidden)
+                if (x + 1 < GameDatas.Theme.CellsNumber && Map.Datas[x + 1, y] == (byte) CellState.WaterHidden)
                     Map.Datas[x + 1, y] = (byte) CellState.Water;
 
-                if (y - 1 >= 0 && Map.Datas[x, y - 1] == (byte)CellState.WaterHidden)
+                if (y - 1 >= 0 && Map.Datas[x, y - 1] == (byte) CellState.WaterHidden)
                     Map.Datas[x, y - 1] = (byte) CellState.Water;
 
-                if (y + 1 < GameDatas.GridTheme.CellsNumber && Map.Datas[x, y + 1] == (byte)CellState.WaterHidden)
+                if (y + 1 < GameDatas.Theme.CellsNumber && Map.Datas[x, y + 1] == (byte) CellState.WaterHidden)
                     Map.Datas[x, y + 1] = (byte) CellState.Water;
 
                 return true;

@@ -9,23 +9,24 @@ namespace OhMyBoat.IO
 {
     public class Writer : BinaryWriter
     {
-        /*public Writer(Stream stream) : base(stream)
+        public Writer(Stream stream)
+            : base(stream)
         {
         }
 
         public void WriteMap(Map map)
         {
-            Write(Map.Size);
+            Write(GameDatas.Theme.CellsNumber);
 
-            for (byte y = 0; y < Map.Size; y++)
-                for (byte x = 0; x < Map.Size; x++)
+            for (byte y = 0; y < GameDatas.Theme.CellsNumber; y++)
+                for (byte x = 0; x < GameDatas.Theme.CellsNumber; x++)
                     Write(map.Datas[x, y]);
         }
 
         public void WritePlayer(Player player)
         {
             Write(player.Name);
-            WriteMap(player.PlayerMap);
-        }*/
+            WriteMap(player.Map);
+        }
     }
 }
