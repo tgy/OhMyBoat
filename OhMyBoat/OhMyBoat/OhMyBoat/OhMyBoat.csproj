@@ -118,6 +118,8 @@
     <Compile Include="Menu\MenuItem.cs" />
     <Compile Include="Menu\MenuListServers.cs" />
     <Compile Include="Menu\MenuState.cs" />
+    <Compile Include="Network\Events\BasicsDatasEvent.cs" />
+    <Compile Include="Network\Events\NetworkEvent.cs" />
     <Compile Include="Network\Packets\BasePacket.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Packet.cs" />

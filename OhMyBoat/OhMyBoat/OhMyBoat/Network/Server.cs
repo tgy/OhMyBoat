@@ -13,7 +13,7 @@ namespace OhMyBoat.Network
 
         public Server()
         {
-            _listener = new TcpListener(Dns.GetHostAddresses(Dns.GetHostName())[3], 4242);
+            _listener = new TcpListener(/*Dns.GetHostAddresses(Dns.GetHostName())[3]*/IPAddress.Parse("127.0.0.1"), 4242);
         }
 
         public Client AcceptClient()

@@ -12,6 +12,7 @@ using OhMyBoat.Maps;
 using OhMyBoat.Menu;
 using OhMyBoat.Network;
 using System.Net.Sockets;
+using OhMyBoat.Network.Events;
 
 namespace OhMyBoat
 {
@@ -20,6 +21,9 @@ namespace OhMyBoat
         readonly GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
         private Client _client;
+        private bool _isServer;
+        private string _serverIp;
+
 
         private Stack<GameState> _gameStates; 
 
@@ -30,14 +34,9 @@ namespace OhMyBoat
 
             Window.Title = "Oh My Boat! What a ballzy boat!";
 
-            if (isServer)
-                _client = new Server().AcceptClient();
-            else
-            {
-                var client = new TcpClient();
-                client.Connect(serverIp, 4242);
-                _client = new Client(client);
-            }
+            _isServer = isServer;
+            _serverIp = serverIp;
+
         }
 
         protected override void Initialize()
@@ -70,7 +69,16 @@ namespace OhMyBoat
 
             //////////////////////////////////////////////////////////
             
-            var playState = new PlayState();
+            if (_isServer)
+                _client = new Server().AcceptClient();
+            else
+            {
+                var client = new TcpClient();
+                client.Connect(_serverIp, 4242);
+                _client = new Client(client);
+            }
+
+            var playState = new PlayState(_client);
 
             _gameStates.Push(playState);
             _gameStates.Peek().Initialize();

@@ -10,7 +10,13 @@ namespace OhMyBoat
         /// </summary>
         static void Main(string[] args)
         {
-            using (var game = new Application(true))
+            bool server = false;
+            string ip = "127.0.0.1";
+            //affichage de la textbox avec choix
+
+            
+
+            using (var game = new Application(server, ip))
             {
                 game.Run();
             }
