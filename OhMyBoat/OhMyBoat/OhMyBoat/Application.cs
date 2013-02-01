@@ -28,11 +28,6 @@ namespace OhMyBoat
             Window.Title = "Oh My Boat! What a ballzy boat!";
         }
 
-        protected override void Initialize()
-        {
-            base.Initialize();
-        }
-
         protected override void LoadContent()
         {
             IsMouseVisible = true;
@@ -63,11 +58,6 @@ namespace OhMyBoat
             _gameStates.Push(playState);
             _gameStates.Peek().Initialize();
             _gameStates.Peek().LoadContent();
-        }
-
-        protected override void UnloadContent()
-        {
-            
         }
 
         protected override void Update(GameTime gameTime)

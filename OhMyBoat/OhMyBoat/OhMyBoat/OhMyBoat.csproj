@@ -114,9 +114,9 @@
     <Compile Include="IO\Reader.cs" />
     <Compile Include="Maps\CellState.cs" />
     <Compile Include="Maps\Map.cs" />
-    <Compile Include="Menu\MenuButton.cs" />
+    <Compile Include="Menu\MenuItems\MenuButton.cs" />
     <Compile Include="Menu\MenuItem.cs" />
-    <Compile Include="Menu\MenuListServers.cs" />
+    <Compile Include="Menu\MenuItems\MenuTextBox.cs" />
     <Compile Include="Menu\MenuState.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Packet.cs" />
