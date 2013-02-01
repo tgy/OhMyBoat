@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
+using OhMyBoat.IO;
+using System.Threading;
 using System.Net.Sockets;
 
 namespace OhMyBoat.Network
@@ -10,7 +10,9 @@ namespace OhMyBoat.Network
     public class Client
     {
         private readonly TcpClient _client;
-        public bool Connected { get; set; }
+        public bool Connected { get; private set; }
+        public Writer Writer { get; private set; }
+        public Reader Reader { get; private set; }
 
         public Stream Stream
         {
@@ -25,6 +27,9 @@ namespace OhMyBoat.Network
             _client = client;
             Connected = true;
 
+            Writer = new Writer(Stream);
+            Reader = new Reader(Stream);
+
             new System.Threading.Tasks.Task(Receive).Start();
         }
 
@@ -32,10 +37,36 @@ namespace OhMyBoat.Network
         {
             while (Connected)
             {
-                //get headers
-                //read packet
-                //check if disconnected
+                Thread.Sleep(20);
+
+                if (_client.Client.Poll(1, SelectMode.SelectRead) && _client.Available == 0)
+                {
+                    Connected = false;
+                    return;
+                }
+
+                if (_client.Available <= PacketHeader.HeaderSize) continue;
+                
+                var header = Packet.GetHeader(Reader);
+
+                while (Connected && _client.Available < header.DataSize)
+                {
+                    Thread.Sleep(20);
+
+                    if (!_client.Client.Poll(1, SelectMode.SelectRead) || _client.Available != 0) continue;
+
+                    Connected = false;
+                    return;
+                }
+
+                if (!Connected) return; // deconnexion sauvage
+
+                var packet = new Packet(header, Reader.ReadBytes(header.DataSize));
+
+                Parser.Parse(this, packet);
             }
         }
+
+
     }
 }

@@ -118,9 +118,13 @@
     <Compile Include="Menu\MenuItem.cs" />
     <Compile Include="Menu\MenuListServers.cs" />
     <Compile Include="Menu\MenuState.cs" />
+    <Compile Include="Network\Packets\BasePacket.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Packet.cs" />
     <Compile Include="Network\PacketHeader.cs" />
+    <Compile Include="Network\Packets\BasicsDatasPacket.cs" />
+    <Compile Include="Network\Parser.cs" />
+    <Compile Include="Network\Server.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="PlayState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
