@@ -21,6 +21,10 @@ namespace OhMyBoat.Maps
 
         public int X, Y;
 
+        public Point Aim;
+
+        public int AimPeriod;
+
         public Rectangle Area;
 
         public Map(byte[,] d)
@@ -33,44 +37,78 @@ namespace OhMyBoat.Maps
             X = x;
             Y = y;
 
-            Area = new Rectangle(x + GameDatas.GridPadding, y + GameDatas.GridPadding, GameDatas.GridSize - 2*GameDatas.GridPadding, GameDatas.GridSize - 2*GameDatas.GridPadding);
+            Area = new Rectangle(x + GameDatas.GridTheme.GridPadding, y + GameDatas.GridTheme.GridPadding, GameDatas.GridTheme.GridSize - 2*GameDatas.GridTheme.GridPadding, GameDatas.GridTheme.GridSize - 2*GameDatas.GridTheme.GridPadding);
         }
 
         public void Draw(SpriteBatch spriteBatch, bool show)
         {
-            spriteBatch.Draw(GameDatas.GridTexture, new Vector2(X, Y), Color.White);
+            spriteBatch.Draw(GameDatas.GridTheme.GridTexture, new Vector2(X, Y), Color.White);
 
-            var x = X + GameDatas.GridPadding;
-            var y = Y + GameDatas.GridPadding;
+            var x = X + GameDatas.GridTheme.GridPadding;
+            var y = Y + GameDatas.GridTheme.GridPadding;
 
-            for (var i = 0; i < GameDatas.CellsNumber; i++)
-                for (var j = 0; j < GameDatas.CellsNumber; j++)
+            for (var i = 0; i < GameDatas.GridTheme.CellsNumber; i++)
+                for (var j = 0; j < GameDatas.GridTheme.CellsNumber; j++)
                 {
                     if (show)
                     {
                         switch (Datas[i, j])
                         {
-                            case (byte)CellState.WaterHidden:
-                                spriteBatch.Draw(GameDatas.CellsTextures[(byte)CellState.Water], new Rectangle(x + j * GameDatas.CellSize, y + i * GameDatas.CellSize, GameDatas.CellSize, GameDatas.CellSize), Color.White);
+                            case (byte) CellState.WaterHidden:
+                                spriteBatch.Draw(GameDatas.GridTheme.CellsTextures[(byte) CellState.Water],
+                                                 new Rectangle(x + j*GameDatas.GridTheme.CellSize,
+                                                               y + i*GameDatas.GridTheme.CellSize,
+                                                               GameDatas.GridTheme.CellSize,
+                                                               GameDatas.GridTheme.CellSize),
+                                                 Color.FromNonPremultiplied(255, 255, 255, 100));
                                 break;
-                            case (byte)CellState.BoatHidden:
-                                spriteBatch.Draw(GameDatas.CellsTextures[(byte)CellState.BoatDestroyed], new Rectangle(x + j * GameDatas.CellSize, y + i * GameDatas.CellSize, GameDatas.CellSize, GameDatas.CellSize), Color.White);
+                            case (byte) CellState.BoatBurning:
+                                spriteBatch.Draw(GameDatas.GridTheme.CellsTextures[(byte) CellState.BoatDestroyed],
+                                                 new Rectangle(x + j*GameDatas.GridTheme.CellSize,
+                                                               y + i*GameDatas.GridTheme.CellSize,
+                                                               GameDatas.GridTheme.CellSize,
+                                                               GameDatas.GridTheme.CellSize), Color.White);
+                                break;
+                            case (byte) CellState.BoatHidden:
+                                spriteBatch.Draw(GameDatas.GridTheme.CellsTextures[(byte) CellState.BoatDestroyed],
+                                                 new Rectangle(x + j*GameDatas.GridTheme.CellSize,
+                                                               y + i*GameDatas.GridTheme.CellSize,
+                                                               GameDatas.GridTheme.CellSize,
+                                                               GameDatas.GridTheme.CellSize),
+                                                 Color.FromNonPremultiplied(255, 255, 255, 100));
                                 break;
                             default:
-                                spriteBatch.Draw(GameDatas.CellsTextures[Datas[i, j]], new Rectangle(x + j * GameDatas.CellSize, y + i * GameDatas.CellSize, GameDatas.CellSize, GameDatas.CellSize), Color.White);
+                                spriteBatch.Draw(GameDatas.GridTheme.CellsTextures[Datas[i, j]],
+                                                 new Rectangle(x + j*GameDatas.GridTheme.CellSize,
+                                                               y + i*GameDatas.GridTheme.CellSize,
+                                                               GameDatas.GridTheme.CellSize,
+                                                               GameDatas.GridTheme.CellSize), Color.White);
                                 break;
                         }
                     }
 
                     else
-                        spriteBatch.Draw(GameDatas.CellsTextures[Datas[i, j]], new Rectangle(x + j*GameDatas.CellSize, y + i*GameDatas.CellSize, GameDatas.CellSize, GameDatas.CellSize), Color.White);
+                    {
+                        spriteBatch.Draw(GameDatas.GridTheme.CellsTextures[Datas[i, j]],
+                                         new Rectangle(x + j*GameDatas.GridTheme.CellSize,
+                                                       y + i*GameDatas.GridTheme.CellSize, GameDatas.GridTheme.CellSize,
+                                                       GameDatas.GridTheme.CellSize), Color.White);
+                    }
                 }
+
+            if (!show)
+                spriteBatch.Draw(GameDatas.GridTheme.AimTexture,
+                                 new Rectangle(x + Aim.X*GameDatas.GridTheme.CellSize - GameDatas.GridTheme.AimPadding,
+                                               y + Aim.Y*GameDatas.GridTheme.CellSize - GameDatas.GridTheme.AimPadding,
+                                               GameDatas.GridTheme.AimTexture.Width,
+                                               GameDatas.GridTheme.AimTexture.Height),
+                                 Color.White);
         }
 
         static public Map Generate()
         {
-            var datas = new byte[GameDatas.CellsNumber, GameDatas.CellsNumber];
-            var boats = new List<int> {5, 4, 4, 3, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+            var datas = new byte[GameDatas.GridTheme.CellsNumber, GameDatas.GridTheme.CellsNumber];
+            var boats = new List<int> {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
             var vertical = false;
             foreach (var boat in boats)
             {
@@ -96,18 +134,18 @@ namespace OhMyBoat.Maps
 
                         for (var i = x - 1; i < x + boat + 1; i++)
                         {
-                            if (i < 0 || i > (GameDatas.CellsNumber - 1))
+                            if (i < 0 || i > (GameDatas.GridTheme.CellsNumber - 1))
                                 continue;
 
                             if (datas[i, y] == (byte)CellState.BoatHidden)
                                 ok = false;
                         }
 
-                        if (y - 1 >= 0 && y - 1 < GameDatas.CellsNumber)
+                        if (y - 1 >= 0 && y - 1 < GameDatas.GridTheme.CellsNumber)
                         {
                             for (var i = x; i < x + boat; i++)
                             {
-                                if (i < 0 || i > (GameDatas.CellsNumber - 1))
+                                if (i < 0 || i > (GameDatas.GridTheme.CellsNumber - 1))
                                     continue;
 
                                 if (datas[i, y - 1] == (byte)CellState.BoatHidden)
@@ -115,11 +153,11 @@ namespace OhMyBoat.Maps
                             }
                         }
 
-                        if (y + 1 >= 0 && y + 1 < GameDatas.CellsNumber)
+                        if (y + 1 >= 0 && y + 1 < GameDatas.GridTheme.CellsNumber)
                         {
                             for (var i = x; i < x + boat; i++)
                             {
-                                if (i < 0 || i > (GameDatas.CellsNumber - 1))
+                                if (i < 0 || i > (GameDatas.GridTheme.CellsNumber - 1))
                                     continue;
 
                                 if (datas[i, y + 1] == (byte)CellState.BoatHidden)
@@ -127,7 +165,7 @@ namespace OhMyBoat.Maps
                             }
                         }
 
-                    } while (x + boat - 1 >= GameDatas.CellsNumber || !ok);
+                    } while (x + boat - 1 >= GameDatas.GridTheme.CellsNumber || !ok);
                     
                     for (var i = x; i < x + boat; i++)
                     {
@@ -153,19 +191,19 @@ namespace OhMyBoat.Maps
 
                         for (var i = y - 1; i < y + boat + 1; i++)
                         {
-                            if (i < 0 || i > (GameDatas.CellsNumber - 1))
+                            if (i < 0 || i > (GameDatas.GridTheme.CellsNumber - 1))
                                 continue;
 
                             if (datas[x, i] == (byte)CellState.BoatHidden)
                                 ok = false;
                         }
 
-                        if (x - 1 >= 0 && x - 1 < GameDatas.CellsNumber)
+                        if (x - 1 >= 0 && x - 1 < GameDatas.GridTheme.CellsNumber)
                         {
 
                             for (var i = y; i < y + boat; i++)
                             {
-                                if (i < 0 || i > (GameDatas.CellsNumber - 1))
+                                if (i < 0 || i > (GameDatas.GridTheme.CellsNumber - 1))
                                     continue;
 
                                 if (datas[x - 1, i] == (byte)CellState.BoatHidden)
@@ -174,12 +212,12 @@ namespace OhMyBoat.Maps
 
                         }
 
-                        if (x + 1 >= 0 && x + 1 < GameDatas.CellsNumber)
+                        if (x + 1 >= 0 && x + 1 < GameDatas.GridTheme.CellsNumber)
                         {
 
                             for (var i = y; i < y + boat; i++)
                             {
-                                if (i < 0 || i > (GameDatas.CellsNumber - 1))
+                                if (i < 0 || i > (GameDatas.GridTheme.CellsNumber - 1))
                                     continue;
 
                                 if (datas[x + 1, i] == (byte)CellState.BoatHidden)
@@ -188,7 +226,7 @@ namespace OhMyBoat.Maps
 
                         }
 
-                    } while (y + boat - 1 >= GameDatas.CellsNumber || !ok);
+                    } while (y + boat - 1 >= GameDatas.GridTheme.CellsNumber || !ok);
 
                     for (var i = y; i < y + boat; i++)
                     {
@@ -208,7 +246,7 @@ namespace OhMyBoat.Maps
         {
             var b = new byte[1];
             new System.Security.Cryptography.RNGCryptoServiceProvider().GetBytes(b);
-            return (byte) (b[0] % GameDatas.CellsNumber);
+            return (byte) (b[0] % GameDatas.GridTheme.CellsNumber);
         }
 
     }

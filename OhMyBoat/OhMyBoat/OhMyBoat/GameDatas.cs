@@ -17,18 +17,17 @@ namespace OhMyBoat
         static public int WindowWidth;
         static public int WindowHeight;
 
-        static public Texture2D[] CellsTextures;
-        public static Texture2D GridTexture;
-
-        public const int CellSize = 40;
-        public const int GridPadding = 19;
-        public const int GridSize = CellSize * 10 + GridPadding * 2;
-        public const int CellsNumber = 10;
-
         static public MouseState MouseState;
         static public MouseState PreviousMouseState;
 
+        static public bool KeyboardFocus = false;
         static public KeyboardState KeyboardState;
         static public KeyboardState PreviousKeyboardState;
+
+        public static GridTheme GridTheme;
+        public static Vector2 ReturnFontPosition;
+
+        public const byte MapPeriod = 9;
+        public const byte MenuPeriod = 20;
     }
 }

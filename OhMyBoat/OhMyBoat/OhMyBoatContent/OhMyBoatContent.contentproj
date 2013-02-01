@@ -42,46 +42,60 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoatBurning.png">
+    <Compile Include="Themes\PinkTheme\BoatBurning.png">
       <Name>BoatBurning</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="BoatHidden.png">
+    <Compile Include="Themes\PinkTheme\BoatHidden.png">
       <Name>BoatHidden</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Water.png">
+    <Compile Include="Themes\PinkTheme\Water.png">
       <Name>Water</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Grid.png">
+    <Compile Include="Themes\PinkTheme\Grid.png">
       <Name>Grid</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Logo.png">
+    <Compile Include="Themes\PinkTheme\Logo.png">
       <Name>Logo</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BoatDestroyed.png">
+    <Compile Include="Themes\PinkTheme\BoatDestroyed.png">
       <Name>BoatDestroyed</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WaterHidden.png">
+    <Compile Include="Themes\PinkTheme\WaterHidden.png">
       <Name>WaterHidden</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Themes\PinkTheme\Aim.png">
+      <Name>Aim</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Themes\PinkTheme\Return.spritefont">
+      <Name>Return</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

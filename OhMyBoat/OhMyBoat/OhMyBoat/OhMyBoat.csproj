@@ -108,17 +108,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameDatas.cs" />
+    <Compile Include="GameState.cs" />
+    <Compile Include="GridTheme.cs" />
     <Compile Include="IO\Writer.cs" />
     <Compile Include="IO\Reader.cs" />
     <Compile Include="Maps\CellState.cs" />
     <Compile Include="Maps\Map.cs" />
+    <Compile Include="Menu\MenuButton.cs" />
+    <Compile Include="Menu\MenuItem.cs" />
+    <Compile Include="Menu\MenuListServers.cs" />
+    <Compile Include="Menu\MenuState.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Packet.cs" />
     <Compile Include="Network\PacketHeader.cs" />
     <Compile Include="Player.cs" />
+    <Compile Include="PlayState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="Application.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
