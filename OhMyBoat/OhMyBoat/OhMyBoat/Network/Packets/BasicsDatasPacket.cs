@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OhMyBoat.Maps;
+using OhMyBoat.Network.Events;
 
 namespace OhMyBoat.Network.Packets
 {
@@ -17,6 +18,8 @@ namespace OhMyBoat.Network.Packets
         {
             string enemyName = packet.Reader.ReadString();
             Map enemyMap = packet.Reader.ReadMap();
+
+            EventCallBackMethod.BeginInvoke(new BasicsDatasEvent() {Enemy = enemyName, EnemyMap = enemyMap}, null, null);
         }
 
         public override void Pack(Client client, object data)

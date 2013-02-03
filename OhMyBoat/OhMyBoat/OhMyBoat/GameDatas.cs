@@ -28,6 +28,8 @@ namespace OhMyBoat
         public static Vector2 ReturnFontPosition;
 
         public const byte MapPeriod = 9;
-        public const byte MenuPeriod = 20;
+        public const byte MenuPeriod = 15;
+        public const byte MenuTextBoxPeriod = 20;
+        public const byte MenuTextBoxCursorPeriod = 15;
     }
 }

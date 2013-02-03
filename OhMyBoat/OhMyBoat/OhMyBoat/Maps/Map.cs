@@ -21,7 +21,7 @@ namespace OhMyBoat.Maps
 
         public Point Aim;
 
-        public int AimPeriod;
+        public int AimPeriodEvolve;
 
         public Rectangle Area;
 

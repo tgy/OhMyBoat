@@ -9,9 +9,11 @@ namespace OhMyBoat.Network
     {
         static readonly Dictionary<byte, BasePacket> Packets = new Dictionary<byte, BasePacket>();
 
-        public static void RegisterPackets()
+        public static void RegisterPackets(BasePacket.CallBackMethod callBackMethod)
         {
-
+            var basicsDatas = new BasicsDatasPacket();
+            basicsDatas.SetEventCallBack(callBackMethod);
+            Packets.Add(basicsDatas.OpCode, basicsDatas);
         }
 
         public static void Parse(Client client, Packet packet)

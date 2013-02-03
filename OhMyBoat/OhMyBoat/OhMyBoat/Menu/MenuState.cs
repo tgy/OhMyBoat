@@ -14,17 +14,41 @@ namespace OhMyBoat.Menu
 {
     class MenuState : GameState
     {
-        private readonly List<MenuItem> _items;
-        private int _selectedItem;
+        public List<MenuItem> Items;
+        private int _selectedItemIndex;
 
         private readonly bool _loop;
         private int _menuPeriod;
 
-        public MenuState(List<MenuItem> items, bool loop, int menuPeriod)
+        public MenuState(List<MenuItem> items, bool loop)
         {
-            _items = items;
+            Items = items;
             _loop = loop;
-            _menuPeriod = menuPeriod;
+            _menuPeriod = 0;
+            _selectedItemIndex = 0;
+            
+            if (items.Count > 0)
+                Items[0].Focused = true;
+        }
+
+        public void SetPositions()
+        {
+            foreach (var menuItem in Items)
+            {
+                menuItem.SetPosition(0, 0);
+            }
+
+            var startY = 50;
+            Items[0].SetPosition((GameDatas.WindowWidth - Items[0].Area.Width)/2, startY);
+
+            for (var i = 1; i < Items.Count; i++)
+            {
+                var x = Items[i - 1].Area.X;
+                if (Items[i - 1].Area.Width != Items[i].Area.Width)
+                    x = x + (Items[i - 1].Area.Width - Items[i].Area.Width)/2;
+                Items[i].SetPosition(x,
+                                     Items[i - 1].Area.Y + Items[i - 1].Area.Height + 20);
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -32,7 +56,7 @@ namespace OhMyBoat.Menu
             if (GameDatas.KeyboardFocus &&
                 (GameDatas.MouseState.X != GameDatas.PreviousMouseState.X ||
                  GameDatas.MouseState.Y != GameDatas.PreviousMouseState.Y))
-                foreach (var item in _items.Where(item => item.Area.Contains(GameDatas.MouseState.X, GameDatas.MouseState.Y)))
+                foreach (var item in Items.Where(item => item.Area.Contains(GameDatas.MouseState.X, GameDatas.MouseState.Y)))
                     GameDatas.KeyboardFocus = false;
 
             if (!GameDatas.KeyboardFocus && (GameDatas.KeyboardState.GetPressedKeys().Length > 0))
@@ -40,56 +64,90 @@ namespace OhMyBoat.Menu
 
             if (GameDatas.KeyboardFocus)
             {
-                _items[_selectedItem].Focused = false;
+                Items[_selectedItemIndex].Focused = false;
 
-                if (GameDatas.KeyboardState.IsKeyDown(Keys.Up) && (GameDatas.PreviousKeyboardState.IsKeyUp(Keys.Up) || _menuPeriod == GameDatas.MenuPeriod))
+                if (GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Up) && (GameDatas.KeyboardState.IsKeyUp(Keys.Up) || _menuPeriod == GameDatas.MenuPeriod))
                 {
-                    if (_selectedItem - 1 >= 0 && _items[_selectedItem - 1].NoClick)
-                        _selectedItem = _selectedItem - 2;
+                    if (_selectedItemIndex - 1 >= 0 && Items[_selectedItemIndex - 1].NoClick)
+                        _selectedItemIndex = _selectedItemIndex - 2;
                     else
-                        _selectedItem--;
+                        _selectedItemIndex--;
                     _menuPeriod = 0;
                 }
 
-                if (GameDatas.KeyboardState.IsKeyDown(Keys.Down) && (GameDatas.PreviousKeyboardState.IsKeyUp(Keys.Down) || _menuPeriod == GameDatas.MenuPeriod))
+                if (GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Down) && (GameDatas.KeyboardState.IsKeyUp(Keys.Down) || _menuPeriod == GameDatas.MenuPeriod))
                 {
-                    if (_selectedItem + 1 < _items.Count && _items[_selectedItem + 1].NoClick)
-                        _selectedItem = _selectedItem + 2;
+                    if (_selectedItemIndex + 1 < Items.Count && Items[_selectedItemIndex + 1].NoClick)
+                        _selectedItemIndex = _selectedItemIndex + 2;
                     else
-                        _selectedItem++;
+                        _selectedItemIndex++;
                     _menuPeriod = 0;
+                }
+
+                if (GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Enter) && GameDatas.KeyboardState.IsKeyUp(Keys.Enter) && !Items[_selectedItemIndex].NoClick)
+                {
+                    Items[_selectedItemIndex].Click(Items[_selectedItemIndex].subMenu);
                 }
 
                 if (_loop)
                 {
-                    if (_selectedItem < 0)
-                        _selectedItem = _items.Count - 1;
-                    else if (_selectedItem >= _items.Count)
-                        _selectedItem = _items.IndexOf(_items.Find(x => x.NoClick == false));
+                    if (_selectedItemIndex < 0)
+                        _selectedItemIndex = Items.Count - 1;
+                    else if (_selectedItemIndex >= Items.Count)
+                        _selectedItemIndex = Items.IndexOf(Items.Find(x => x.NoClick == false));
                 }
 
                 else
                 {
-                    if (_selectedItem < 0)
-                        _selectedItem = _items.IndexOf(_items.Find(x => x.NoClick == false));
-                    else if (_selectedItem >= _items.Count)
-                        _selectedItem = _items.Count - 1;
+                    if (_selectedItemIndex < 0)
+                        _selectedItemIndex = Items.IndexOf(Items.Find(x => x.NoClick == false));
+                    else if (_selectedItemIndex >= Items.Count)
+                        _selectedItemIndex = Items.Count - 1;
                 }
 
-                _items[_selectedItem].Focused = true;
-
-                _items[_selectedItem].Update(gameTime);
+                Items[_selectedItemIndex].Focused = true;
             }
 
             else
             {
-                for (var i = 0; i < _items.Count; i++)
+                for (var i = 0; i < Items.Count; i++)
                 {
-                    if (!_items[i].Area.Contains(GameDatas.MouseState.X, GameDatas.MouseState.Y)) continue;
-                    _items[_selectedItem].Focused = false;
-                    _selectedItem = i;
-                    _items[_selectedItem].Focused = true;
+                    if (!Items[i].Area.Contains(GameDatas.MouseState.X, GameDatas.MouseState.Y)) continue;
+                    if (Items[i].NoClick) break;
+                    if (!Items[i].FocusOnClick)
+                    {
+                        Items[_selectedItemIndex].Focused = false;
+                        _selectedItemIndex = i;
+                        Items[_selectedItemIndex].Focused = true;
+                    }
+
+                    if (GameDatas.MouseState.LeftButton == ButtonState.Released &&
+                        GameDatas.PreviousMouseState.LeftButton == ButtonState.Pressed)
+                    {
+                        if (Items[i].FocusOnClick)
+                        {
+                            Items[_selectedItemIndex].Focused = false;
+                            _selectedItemIndex = i;
+                            Items[_selectedItemIndex].Focused = true;
+                        }
+
+                        else
+                            Items[_selectedItemIndex].Click(Items[_selectedItemIndex].subMenu);
+                    }
                 }
+            }
+
+            foreach (var menuItem in Items)
+            {
+                menuItem.Update(gameTime);
+            }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            foreach (var menuItem in Items)
+            {
+                menuItem.Draw(spriteBatch);
             }
         }
     }

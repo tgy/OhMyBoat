@@ -92,14 +92,56 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Themes\PinkTheme\Return.spritefont">
-      <Name>Return</Name>
+    <Compile Include="Themes\PinkTheme\GeneralFont.spritefont">
+      <Name>GeneralFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Menu\" />
+    <Compile Include="Themes\PinkTheme\ButtonFont.spritefont">
+      <Name>ButtonFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Themes\PinkTheme\TextBoxFont.spritefont">
+      <Name>TextBoxFont</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Themes\PinkTheme\TextBoxTexture.png">
+      <Name>TextBoxTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Themes\PinkTheme\TextBoxTextureFocus.png">
+      <Name>TextBoxTextureFocus</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Themes\PinkTheme\TextBoxCursorTexture.png">
+      <Name>TextBoxCursorTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Themes\PinkTheme\ButtonTexture.png">
+      <Name>ButtonTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Themes\PinkTheme\ButtonTextureFocus.png">
+      <Name>ButtonTextureFocus</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -14,18 +14,21 @@ namespace OhMyBoat.Menu
 {
     abstract class MenuItem
     {
-        public delegate void OnClick(MenuState m, int selectedRectangle);
+        public delegate void OnClick(MenuState m);
         public OnClick Click;
 
-        public Vector2 Position;
+        public MenuState subMenu = new MenuState(new List<MenuItem>(), true);
 
         public Rectangle Area;
 
         public bool Focused;
 
-        public bool NoClick;
+        public bool NoClick, FocusOnClick;
 
+        public virtual void LoadContent(ContentManager content) { }
         public virtual void Update(GameTime gameTime) { }
         public virtual void Draw(SpriteBatch spriteBatch) { }
+
+        public virtual void SetPosition(int x, int y) { }
     }
 }

@@ -14,16 +14,40 @@ namespace OhMyBoat
 {
     public class Theme
     {
+        // GENERAL //////////////////////////////////////////////////////////
+
         public string Name;
 
-        public SpriteFont ReturnFont;
+        public Texture2D LogoTexture;
+
+        public SpriteFont GeneralFont;
+
+        // MENU //////////////////////////////////////////////////////////
+
+        public SpriteFont ButtonFont;
+        public Texture2D ButtonTexture, ButtonTextureFocus;
+        public short ButtonPaddingY;
+
+        public SpriteFont TextBoxFont;
+        public Texture2D TextBoxTexture, TextBoxTextureFocus, TextBoxCursorTexture;
+        public short TextBoxCharsDisplayed;
+        public short TextBoxPaddingX, TextBoxPaddingY, TextBoxLabelPaddingY;
+
+        // MAP //////////////////////////////////////////////////////////
 
         public Texture2D[] CellsTextures;
-        public Texture2D GridTexture, AimTexture, LogoTexture;
+        public Texture2D GridTexture;
+        public Texture2D AimTexture;
 
-        public short CellsNumber, CellSize, GridPadding, GridSize, AimPadding;
+        public short CellsNumber; // Nombre de cases qu'a la map
+        public short CellSize; // Taille en pixels d'une case
+        public short GridPadding; // Padding de la map (de la texture de la grille), peut etre nul en fonction de la texture
+        public short GridSize; // Taille en pixels de la grille
+        public short AimPadding; // Padding du viseur
 
-        public Theme(string name, short cellsNumber, short cellSize, short gridPadding, short aimPadding)
+        //////////////////////////////////////////////////////////
+
+        public Theme(string name, short cellsNumber, short cellSize, short gridPadding, short aimPadding, short textBoxCharsDisplayed, short textBoxPaddingX, short textBoxLabelPaddingY, short textBoxPaddingY, short buttonPaddingY)
         {
             Name = name;
             CellsNumber = cellsNumber;
@@ -31,11 +55,24 @@ namespace OhMyBoat
             GridPadding = gridPadding;
             GridSize = (short) (cellSize*CellsNumber + gridPadding*2);
             AimPadding = aimPadding;
+            TextBoxCharsDisplayed = textBoxCharsDisplayed;
+            TextBoxPaddingX = textBoxPaddingX;
+            TextBoxPaddingY = textBoxPaddingY;
+            ButtonPaddingY = buttonPaddingY;
         }
 
         public void Load(ContentManager content)
         {
-            ReturnFont = content.Load<SpriteFont>("Themes/" + Name + "/Return");
+            GeneralFont = content.Load<SpriteFont>("Themes/" + Name + "/GeneralFont");
+            ButtonFont = content.Load<SpriteFont>("Themes/" + Name + "/ButtonFont");
+            TextBoxFont = content.Load<SpriteFont>("Themes/" + Name + "/TextBoxFont");
+
+            ButtonTexture = content.Load<Texture2D>("Themes/" + Name + "/ButtonTexture");
+            ButtonTextureFocus = content.Load<Texture2D>("Themes/" + Name + "/ButtonTextureFocus");
+
+            TextBoxTexture = content.Load<Texture2D>("Themes/" + Name + "/TextBoxTexture");
+            TextBoxTextureFocus = content.Load<Texture2D>("Themes/" + Name + "/TextBoxTextureFocus");
+            TextBoxCursorTexture = content.Load<Texture2D>("Themes/" + Name + "/TextBoxCursorTexture");
 
             GridTexture = content.Load<Texture2D>("Themes/" + Name + "/Grid");
 

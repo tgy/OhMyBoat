@@ -109,6 +109,7 @@
   <ItemGroup>
     <Compile Include="GameDatas.cs" />
     <Compile Include="GameState.cs" />
+    <Compile Include="Menu\MenuItems\MenuPassive.cs" />
     <Compile Include="Theme.cs" />
     <Compile Include="IO\Writer.cs" />
     <Compile Include="IO\Reader.cs" />
@@ -118,6 +119,8 @@
     <Compile Include="Menu\MenuItem.cs" />
     <Compile Include="Menu\MenuItems\MenuTextBox.cs" />
     <Compile Include="Menu\MenuState.cs" />
+    <Compile Include="Network\Events\BasicsDatasEvent.cs" />
+    <Compile Include="Network\Events\NetworkEvent.cs" />
     <Compile Include="Network\Packets\BasePacket.cs" />
     <Compile Include="Network\Client.cs" />
     <Compile Include="Network\Packet.cs" />

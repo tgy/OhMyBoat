@@ -55,36 +55,36 @@ namespace OhMyBoat
             if (GameDatas.KeyboardFocus)
             {
                 if (GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Left) &&
-                    (GameDatas.KeyboardState.IsKeyUp(Keys.Left) || Map.AimPeriod == GameDatas.MapPeriod))
+                    (GameDatas.KeyboardState.IsKeyUp(Keys.Left) || Map.AimPeriodEvolve == GameDatas.MapPeriod))
                 {
                     Map.Aim.X = (Map.Aim.X - 1) < 0 ? (GameDatas.Theme.CellsNumber - 1) : (Map.Aim.X - 1);
-                    Map.AimPeriod = 0;
+                    Map.AimPeriodEvolve = 0;
                 }
 
                 if (GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Right) &&
-                    (GameDatas.KeyboardState.IsKeyUp(Keys.Right) || Map.AimPeriod == GameDatas.MapPeriod))
+                    (GameDatas.KeyboardState.IsKeyUp(Keys.Right) || Map.AimPeriodEvolve == GameDatas.MapPeriod))
                 {
                     Map.Aim.X = (Map.Aim.X + 1) > (GameDatas.Theme.CellsNumber - 1) ? 0 : (Map.Aim.X + 1);
-                    Map.AimPeriod = 0;
+                    Map.AimPeriodEvolve = 0;
                 }
 
                 if (GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Up) &&
-                    (GameDatas.KeyboardState.IsKeyUp(Keys.Up) || Map.AimPeriod == GameDatas.MapPeriod))
+                    (GameDatas.KeyboardState.IsKeyUp(Keys.Up) || Map.AimPeriodEvolve == GameDatas.MapPeriod))
                 {
                     Map.Aim.Y = (Map.Aim.Y - 1) < 0 ? (GameDatas.Theme.CellsNumber - 1) : (Map.Aim.Y - 1);
-                    Map.AimPeriod = 0;
+                    Map.AimPeriodEvolve = 0;
                 }
 
                 if (GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Down) &&
-                    (GameDatas.KeyboardState.IsKeyUp(Keys.Down) || Map.AimPeriod == GameDatas.MapPeriod))
+                    (GameDatas.KeyboardState.IsKeyUp(Keys.Down) || Map.AimPeriodEvolve == GameDatas.MapPeriod))
                 {
                     Map.Aim.Y = (Map.Aim.Y + 1) > (GameDatas.Theme.CellsNumber - 1) ? 0 : (Map.Aim.Y + 1);
-                    Map.AimPeriod = 0;
+                    Map.AimPeriodEvolve = 0;
                 }
 
                 if (GameDatas.KeyboardState.IsKeyDown(Keys.Right) || GameDatas.KeyboardState.IsKeyDown(Keys.Down) ||
                     GameDatas.KeyboardState.IsKeyDown(Keys.Up) || GameDatas.KeyboardState.IsKeyDown(Keys.Left))
-                    Map.AimPeriod++;
+                    Map.AimPeriodEvolve++;
             }
 
             else

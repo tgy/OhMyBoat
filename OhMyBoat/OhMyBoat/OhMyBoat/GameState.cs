@@ -15,7 +15,7 @@ namespace OhMyBoat
     class GameState
     {
         public virtual void Initialize() { }
-        public virtual void LoadContent() { }
+        public virtual void LoadContent(ContentManager content) { }
         public virtual void Update(GameTime gameTime) { }
         public virtual void Draw(SpriteBatch spriteBatch) { }
     }
