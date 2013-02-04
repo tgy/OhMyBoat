@@ -86,6 +86,7 @@ namespace OhMyBoat
 
             var createNameTextBox = new MenuTextBox("What's your name?");
             var submitCreateGame = new MenuButton("Go !");
+            submitCreateGame.Click = _launchGame;
 
             var createGameMenuItems = new List<MenuItem> { logo, createNameTextBox, submitCreateGame };
             var createGameMenuState = new MenuState(createGameMenuItems, true);
@@ -172,6 +173,12 @@ namespace OhMyBoat
         {
             if (_gameStates.Count > 1)
                 _gameStates.Pop();
+        }
+
+        private void _launchGame(MenuState m)
+        {
+            PlayState p = new PlayState();
+            _gameStates.Push(p);
         }
     }
 }

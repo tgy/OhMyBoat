@@ -65,6 +65,7 @@ namespace OhMyBoat.Menu.MenuItems
             {
                 case Keys.OemPeriod:
                 case Keys.OemComma:
+                case Keys.Decimal:
                     return '.';
 
                     #region test-0-9
@@ -102,6 +103,63 @@ namespace OhMyBoat.Menu.MenuItems
 
                     #endregion
 
+                    #region test a-z
+
+                case Keys.A:
+                    return 'a';
+                case Keys.B:
+                    return 'b';
+                case Keys.C:
+                    return 'c';
+                case Keys.D:
+                    return 'd';
+                case Keys.E:
+                    return 'e';
+                case Keys.F:
+                    return 'f';
+                case Keys.G:
+                    return 'g';
+                case Keys.H:
+                    return 'h';
+                case Keys.I:
+                    return 'i';
+                case Keys.J:
+                    return 'j';
+                case Keys.K:
+                    return 'k';
+                case Keys.L:
+                    return 'l';
+                case Keys.M:
+                    return 'm';
+                case Keys.N:
+                    return 'n';
+                case Keys.O:
+                    return 'o';
+                case Keys.P:
+                    return 'p';
+                case Keys.Q:
+                    return 'q';
+                case Keys.R:
+                    return 'r';
+                case Keys.S:
+                    return 's';
+                case Keys.T:
+                    return 't';
+                case Keys.U:
+                    return 'u';
+                case Keys.V:
+                    return 'v';
+                case Keys.W:
+                    return 'w';
+                case Keys.X:
+                    return 'x';
+                case Keys.Y:
+                    return 'y';
+                case Keys.Z:
+                    return 'z';
+
+                    #endregion
+
                 default:
                     return '$';
             }
@@ -127,6 +185,11 @@ namespace OhMyBoat.Menu.MenuItems
             foreach (var pressedKey in GameDatas.PreviousKeyboardState.GetPressedKeys())
             {
                 var inputChar = _keyToChar(pressedKey);
+
+                if (inputChar > 96 && inputChar < 123 &&
+                    (GameDatas.PreviousKeyboardState.GetPressedKeys().Contains(Keys.LeftShift) ||
+                     GameDatas.PreviousKeyboardState.GetPressedKeys().Contains(Keys.RightShift)))
+                    inputChar = (char) (inputChar - 32);
 
                 if (inputChar != '$' &&
                     ((GameDatas.KeyboardState.IsKeyUp(pressedKey) ||

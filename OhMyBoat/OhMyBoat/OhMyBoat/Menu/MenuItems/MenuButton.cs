@@ -35,7 +35,7 @@ namespace OhMyBoat.Menu.MenuItems
         {
             spriteBatch.Draw(Focused ? GameDatas.Theme.ButtonTextureFocus : GameDatas.Theme.ButtonTexture, Area, Color.White);
 
-            spriteBatch.DrawString(GameDatas.Theme.TextBoxFont, Text, _textPosition, new Color(213, 105, 18));
+            spriteBatch.DrawString(GameDatas.Theme.TextBoxFont, Text, _textPosition, new Color(236, 0, 140));
         }
     }
 }

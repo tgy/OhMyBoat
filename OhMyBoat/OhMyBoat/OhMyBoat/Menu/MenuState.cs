@@ -38,7 +38,7 @@ namespace OhMyBoat.Menu
                 menuItem.SetPosition(0, 0);
             }
 
-            var startY = 50;
+            var startY = 15;
             Items[0].SetPosition((GameDatas.WindowWidth - Items[0].Area.Width)/2, startY);
 
             for (var i = 1; i < Items.Count; i++)
@@ -47,7 +47,7 @@ namespace OhMyBoat.Menu
                 if (Items[i - 1].Area.Width != Items[i].Area.Width)
                     x = x + (Items[i - 1].Area.Width - Items[i].Area.Width)/2;
                 Items[i].SetPosition(x,
-                                     Items[i - 1].Area.Y + Items[i - 1].Area.Height + 20);
+                                     Items[i - 1].Area.Y + Items[i - 1].Area.Height + 10);
             }
         }
 
