@@ -19,7 +19,9 @@ namespace OhMyBoat.Network
         public Client AcceptClient()
         {
             _listener.Start();
-            return new Client(_listener.AcceptTcpClient());
+            var c =  new Client(_listener.AcceptTcpClient());
+            _listener.Stop();
+            return c;
         }
     }
 }

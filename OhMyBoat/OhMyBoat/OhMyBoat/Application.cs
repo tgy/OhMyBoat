@@ -21,23 +21,15 @@ namespace OhMyBoat
     {
         private readonly GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Client _client;
-        private bool _isServer;
-        private string _serverIp;
-
 
         private Stack<GameState> _gameStates;
 
-        public Application( /*bool isServer, string serverIp = ""*/)
+        public Application()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
 
             Window.Title = "Oh My Boat! What a ballzy boat!";
-
-            /*_isServer = isServer;
-            _serverIp = serverIp;*/
-
         }
 
         protected override void Initialize()
@@ -71,26 +63,17 @@ namespace OhMyBoat
 
             //////////////////////////////////////////////////////////
 
-            /*if (_isServer)
-                _client = new Server().AcceptClient();
-            else
-            {
-                var client = new TcpClient();
-                client.Connect(_serverIp, 4242);
-                _client = new Client(client);
-            } */
-
             var logo = new MenuPassive(GameDatas.Theme.LogoTexture);
 
             // CREATION MENU CREATE GAME
 
             var createNameTextBox = new MenuTextBox("What's your name?");
-            var submitCreateGame = new MenuButton("Go !");
-            submitCreateGame.Click = _launchGame;
+            var submitCreateGame = new MenuButton("Go !") {Click = CreateGame};
 
             var createGameMenuItems = new List<MenuItem> { logo, createNameTextBox, submitCreateGame };
             var createGameMenuState = new MenuState(createGameMenuItems, true);
             createGameMenuState.SetPositions();
+            submitCreateGame.subMenu = createGameMenuState;
 
             // CREATION MENU JOIN GAME
 
@@ -102,7 +85,8 @@ namespace OhMyBoat
             var joinGameMenuItems = new List<MenuItem> {logo, joinNameTextBox, serverIpTextBox, submitJoinGame, comeBackButton};
             var joinGameMenuState = new MenuState(joinGameMenuItems, true);
             joinGameMenuState.SetPositions();
-
+            submitJoinGame.subMenu = joinGameMenuState;
+            submitJoinGame.Click = JoinGame;
             comeBackButton.Click = _comeBack;
 
             // CREATION MENU ACCUEIL
@@ -175,9 +159,22 @@ namespace OhMyBoat
                 _gameStates.Pop();
         }
 
-        private void _launchGame(MenuState m)
+        void JoinGame(MenuState m)
         {
-            PlayState p = new PlayState();
+            var client = new TcpClient();
+            client.Connect(((MenuTextBox)m.Items[2]).Value, 4242);
+            
+            var p = new PlayState(new Client(client), ((MenuTextBox) m.Items[1]).Value, ref _gameStates);
+            p.Initialize();
+            p.LoadContent(Content);
+            _gameStates.Push(p);
+        }
+
+        void CreateGame(MenuState m)
+        {
+            var p = new PlayState(new Server().AcceptClient(), ((MenuTextBox) m.Items[1]).Value, ref _gameStates, true);
+            p.Initialize();
+            p.LoadContent(Content);
             _gameStates.Push(p);
         }
     }

@@ -11,9 +11,15 @@ namespace OhMyBoat.Network
 
         public static void RegisterPackets(BasePacket.CallBackMethod callBackMethod)
         {
-            var basicsDatas = new BasicsDatasPacket();
-            basicsDatas.SetEventCallBack(callBackMethod);
-            Packets.Add(basicsDatas.OpCode, basicsDatas);
+            var pcks = new List<BasePacket> {new BasicsDatasPacket(), new FireDatasPacket()};
+
+            foreach (var basePacket in pcks)
+            {
+                if (Packets.ContainsKey(basePacket.OpCode)) continue;
+
+                basePacket.SetEventCallBack(callBackMethod);
+                Packets.Add(basePacket.OpCode, basePacket);
+            }
         }
 
         public static void Parse(Client client, Packet packet)

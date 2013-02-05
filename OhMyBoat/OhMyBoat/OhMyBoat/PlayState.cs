@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using OhMyBoat.Maps;
 using OhMyBoat.Network;
 using OhMyBoat.Network.Events;
 using OhMyBoat.Network.Packets;
@@ -19,30 +20,32 @@ namespace OhMyBoat
     {
         private Player _current, _enemy;
         private readonly Client _client;
+        private readonly string _currentName;
+        private bool _myTurn;
+        private readonly Stack<GameState> _gameStates; 
 
-        /*public PlayState(Client client)
+        public PlayState(Client client, string currentName,ref Stack<GameState> gameStates,bool begin = false)
         {
             _client = client;
-        }*/
+            _currentName = currentName;
+            _myTurn = begin;
+            _gameStates = gameStates;
+        }
 
         public override void Initialize()
         {
-            _current = new Player("Toogy");
+            _current = new Player(_currentName, Map.Generate());
             _current.Map.SetPosition(GameDatas.WindowWidth/2 - GameDatas.Theme.GridSize,
                                      GameDatas.WindowHeight - GameDatas.Theme.GridSize - 25);
 
-            _enemy = new Player("Neo");
-            _enemy.Map.SetPosition(GameDatas.WindowWidth / 2,
-                                     GameDatas.WindowHeight - GameDatas.Theme.GridSize - 25);
+            Parser.RegisterPackets(ManageNetworkEvents);
 
-            //Parser.RegisterPackets(ManageNetworkEvents);
-
-            //SendCurrentPlayer();
+            SendCurrentPlayer();
         }
 
         private void SendCurrentPlayer()
         {
-            new BasicsDatasPacket().Pack(_client, Maps.Map.Generate(), _current.Name);
+            new BasicsDatasPacket().Pack(_client, _current.Map, _current.Name);
         }
 
         public void ManageNetworkEvents(NetworkEvent eventDatas)
@@ -51,16 +54,24 @@ namespace OhMyBoat
             {
                 case 1:
                     var basicsDatas = eventDatas as BasicsDatasEvent;
-                    _current.Map = basicsDatas.EnemyMap;
-                    _enemy = new Player(basicsDatas.Enemy);
+                    _enemy = new Player(basicsDatas.Enemy, basicsDatas.EnemyMap);
+                    _enemy.Map.SetPosition(GameDatas.WindowWidth/2,
+                                           GameDatas.WindowHeight - GameDatas.Theme.GridSize - 25);
                     return;
+                case 2:
+                    var fireDatas = eventDatas as FireDatasEvent;
+                    _current.Play(fireDatas.Coordinates.X, fireDatas.Coordinates.Y);
+                    break;
             }
         }
 
         public override void Update(GameTime gameTime)
         {
-            /*if (_enemy == null) // pas encore connecté
-                return;*/
+            if (_enemy == null) // pas encore connecté
+                return;
+
+            if (!_client.Connected)
+                _gameStates.Pop();
 
             if (GameDatas.KeyboardFocus &&
                 (GameDatas.MouseState.X != GameDatas.PreviousMouseState.X ||
@@ -79,18 +90,18 @@ namespace OhMyBoat
             _current.Update();
             _enemy.Update();
 
-            if ((GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Enter) && GameDatas.KeyboardState.IsKeyUp(Keys.Enter)) ||
-                (!GameDatas.KeyboardFocus && GameDatas.MouseState.LeftButton == ButtonState.Released &&
-                 GameDatas.PreviousMouseState.LeftButton == ButtonState.Pressed))
-            {
-                _enemy.Play(_enemy.Map.Aim.Y, _enemy.Map.Aim.X);
-            }
+            if ((!GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Enter) || !GameDatas.KeyboardState.IsKeyUp(Keys.Enter)) &&
+                (GameDatas.KeyboardFocus || GameDatas.MouseState.LeftButton != ButtonState.Released ||
+                 GameDatas.PreviousMouseState.LeftButton != ButtonState.Pressed)) return;
+
+            _enemy.Play(_enemy.Map.Aim.Y, _enemy.Map.Aim.X);
+            new FireDatasPacket().Pack(_client, new Point(_enemy.Map.Aim.Y, _enemy.Map.Aim.X));
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            /*if (_enemy == null) // pas encore connecté
-                return;*/
+            if (_enemy == null) // pas encore connecté
+                return;
 
             spriteBatch.Draw(GameDatas.Theme.LogoTexture,
                              new Rectangle((GameDatas.WindowWidth - GameDatas.Theme.LogoTexture.Width)/2, 15,
@@ -99,6 +110,8 @@ namespace OhMyBoat
 
             _current.Map.Draw(spriteBatch, true);
             _enemy.Map.Draw(spriteBatch, false);
+
+            spriteBatch.DrawString(GameDatas.Theme.GeneralFont, "Adversaire : " + _enemy.Name, new Vector2(GameDatas.WindowWidth - GameDatas.Theme.GeneralFont.MeasureString("Adversaire : " + _enemy.Name).X, 0), Color.Violet);
         }
     }
 }

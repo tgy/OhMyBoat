@@ -121,19 +121,17 @@ namespace OhMyBoat.Menu
                         Items[_selectedItemIndex].Focused = true;
                     }
 
-                    if (GameDatas.MouseState.LeftButton == ButtonState.Released &&
-                        GameDatas.PreviousMouseState.LeftButton == ButtonState.Pressed)
+                    if (GameDatas.MouseState.LeftButton != ButtonState.Released ||
+                        GameDatas.PreviousMouseState.LeftButton != ButtonState.Pressed) continue;
+                    if (Items[i].FocusOnClick)
                     {
-                        if (Items[i].FocusOnClick)
-                        {
-                            Items[_selectedItemIndex].Focused = false;
-                            _selectedItemIndex = i;
-                            Items[_selectedItemIndex].Focused = true;
-                        }
-
-                        else
-                            Items[_selectedItemIndex].Click(Items[_selectedItemIndex].subMenu);
+                        Items[_selectedItemIndex].Focused = false;
+                        _selectedItemIndex = i;
+                        Items[_selectedItemIndex].Focused = true;
                     }
+
+                    else
+                        Items[_selectedItemIndex].Click(Items[_selectedItemIndex].subMenu);
                 }
             }
 

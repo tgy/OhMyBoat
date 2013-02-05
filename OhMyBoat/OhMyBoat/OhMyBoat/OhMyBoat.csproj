@@ -110,6 +110,8 @@
     <Compile Include="GameDatas.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="Menu\MenuItems\MenuPassive.cs" />
+    <Compile Include="Network\Events\FireDatasEvent.cs" />
+    <Compile Include="Network\Packets\FireDatasPacket.cs" />
     <Compile Include="Theme.cs" />
     <Compile Include="IO\Writer.cs" />
     <Compile Include="IO\Reader.cs" />

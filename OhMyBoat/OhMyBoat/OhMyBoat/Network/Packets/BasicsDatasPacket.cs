@@ -19,7 +19,7 @@ namespace OhMyBoat.Network.Packets
             string enemyName = packet.Reader.ReadString();
             Map enemyMap = packet.Reader.ReadMap();
 
-            EventCallBackMethod.BeginInvoke(new BasicsDatasEvent() {Enemy = enemyName, EnemyMap = enemyMap}, null, null);
+            EventCallBackMethod.BeginInvoke(new BasicsDatasEvent {Enemy = enemyName, EnemyMap = enemyMap}, null, null);
         }
 
         public override void Pack(Client client, object data)
