@@ -89,7 +89,8 @@ namespace OhMyBoat.Menu
 
                 if (GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Enter) && GameDatas.KeyboardState.IsKeyUp(Keys.Enter) && !Items[_selectedItemIndex].NoClick)
                 {
-                    Items[_selectedItemIndex].Click(Items[_selectedItemIndex].subMenu);
+                    if (Items[_selectedItemIndex].Click != null)
+                        Items[_selectedItemIndex].Click(Items[_selectedItemIndex].subMenu);
                 }
 
                 if (_loop)
@@ -136,6 +137,7 @@ namespace OhMyBoat.Menu
                     }
 
                     else
+                        if (Items[_selectedItemIndex].Click != null)
                         Items[_selectedItemIndex].Click(Items[_selectedItemIndex].subMenu);
                 }
             }
