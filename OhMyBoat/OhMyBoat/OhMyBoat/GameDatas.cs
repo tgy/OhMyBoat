@@ -26,7 +26,6 @@ namespace OhMyBoat
         static public KeyboardState PreviousKeyboardState;
 
         public static Theme Theme;
-        public static Vector2 ReturnFontPosition;
 
         public const byte MapPeriod = 9;
         public const byte MenuPeriod = 15;

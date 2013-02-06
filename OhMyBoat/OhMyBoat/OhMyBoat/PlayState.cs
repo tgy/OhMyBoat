@@ -71,10 +71,8 @@ namespace OhMyBoat
 
         public override void LoadContent(ContentManager content)
         {
-            var quitApplicationButton = new MenuButton("Quit from OhMyBoat");
             var gameOverPassive = new MenuPassive(GameDatas.Theme.GameOverTexture);
-            var playAgainButton = new MenuButton("Play again");
-            var gameOverItems = new List<MenuItem> {gameOverPassive, playAgainButton, quitApplicationButton};
+            var gameOverItems = new List<MenuItem> {gameOverPassive};
 
             _gameOverMenuState = new MenuState(gameOverItems, true);
         }
@@ -89,7 +87,6 @@ namespace OhMyBoat
 
             if (_enemy.IsOver() || _current.IsOver())
             {
-                _gameStates.Pop();
                 _gameStates.Push(_gameOverMenuState);
             }
 

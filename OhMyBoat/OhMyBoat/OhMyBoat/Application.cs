@@ -90,8 +90,6 @@ namespace OhMyBoat
             submitJoinGame.Click = JoinGame;
             comeBackButton.Click = _comeBack;
 
-            // CREATION MENU GAME OVER
-
             // CREATION MENU ACCUEIL
 
             var createGameButton = new MenuButton("Create a Game");
