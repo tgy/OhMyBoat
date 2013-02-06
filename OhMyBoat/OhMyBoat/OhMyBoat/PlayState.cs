@@ -100,14 +100,13 @@ namespace OhMyBoat
                 (GameDatas.MouseState.X != GameDatas.PreviousMouseState.X ||
                  GameDatas.MouseState.Y != GameDatas.PreviousMouseState.Y))
             {
-                if (_current.Map.Area.Contains(GameDatas.MouseState.X, GameDatas.MouseState.Y) ||
-                    _enemy.Map.Area.Contains(GameDatas.MouseState.X, GameDatas.MouseState.Y))
+                if (_current.Map.Area.Contains(GameDatas.MouseState.X, GameDatas.MouseState.Y))
                     GameDatas.KeyboardFocus = false;
             }
 
             if (!GameDatas.KeyboardFocus &&
                 (GameDatas.KeyboardState.IsKeyDown(Keys.Right) || GameDatas.KeyboardState.IsKeyDown(Keys.Down) ||
-                 GameDatas.KeyboardState.IsKeyDown(Keys.Up) || GameDatas.KeyboardState.IsKeyDown(Keys.Down) || GameDatas.KeyboardState.IsKeyDown(Keys.Enter) || GameDatas.KeyboardState.IsKeyUp(Keys.Enter)))
+                 GameDatas.KeyboardState.IsKeyDown(Keys.Up) || GameDatas.KeyboardState.IsKeyDown(Keys.Down) || GameDatas.KeyboardState.IsKeyDown(Keys.Enter)))
                 GameDatas.KeyboardFocus = true;
 
             _current.Update();
