@@ -26,6 +26,7 @@ namespace OhMyBoat
 
         public PlayState(Client client, string currentName,ref Stack<GameState> gameStates,bool begin = false)
         {
+            Parser.RegisterPackets(ManageNetworkEvents);
             _client = client;
             _currentName = currentName;
             _myTurn = begin;
@@ -37,8 +38,6 @@ namespace OhMyBoat
             _current = new Player(_currentName, Map.Generate());
             _current.Map.SetPosition(GameDatas.WindowWidth/2 - GameDatas.Theme.GridSize,
                                      GameDatas.WindowHeight - GameDatas.Theme.GridSize - 25);
-
-            Parser.RegisterPackets(ManageNetworkEvents);
 
             SendCurrentPlayer();
         }
@@ -60,7 +59,8 @@ namespace OhMyBoat
                     return;
                 case 2:
                     var fireDatas = eventDatas as FireDatasEvent;
-                    _current.Play(fireDatas.Coordinates.X, fireDatas.Coordinates.Y);
+                    if (_current.Play(fireDatas.Coordinates.X, fireDatas.Coordinates.Y) == FireResult.Fail)
+                        _myTurn = true;
                     break;
             }
         }
@@ -92,9 +92,10 @@ namespace OhMyBoat
 
             if ((!GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Enter) || !GameDatas.KeyboardState.IsKeyUp(Keys.Enter)) &&
                 (GameDatas.KeyboardFocus || GameDatas.MouseState.LeftButton != ButtonState.Released ||
-                 GameDatas.PreviousMouseState.LeftButton != ButtonState.Pressed)) return;
+                 GameDatas.PreviousMouseState.LeftButton != ButtonState.Pressed) || !_myTurn) return;
 
-            _enemy.Play(_enemy.Map.Aim.Y, _enemy.Map.Aim.X);
+            if (_enemy.Play(_enemy.Map.Aim.Y, _enemy.Map.Aim.X) == FireResult.Fail)
+                _myTurn = false;
             new FireDatasPacket().Pack(_client, new Point(_enemy.Map.Aim.Y, _enemy.Map.Aim.X));
         }
 
@@ -112,6 +113,7 @@ namespace OhMyBoat
             _enemy.Map.Draw(spriteBatch, false);
 
             spriteBatch.DrawString(GameDatas.Theme.GeneralFont, "Adversaire : " + _enemy.Name, new Vector2(GameDatas.WindowWidth - GameDatas.Theme.GeneralFont.MeasureString("Adversaire : " + _enemy.Name).X, 0), Color.Violet);
+            spriteBatch.DrawString(GameDatas.Theme.GeneralFont, _myTurn ? "A toi de jouer" : _enemy.Name + " joue", new Vector2(GameDatas.WindowWidth - GameDatas.Theme.GeneralFont.MeasureString(_myTurn ? "A toi de jouer" : _enemy.Name + " joue").X - 50, 150), Color.LightGreen);
         }
     }
 }

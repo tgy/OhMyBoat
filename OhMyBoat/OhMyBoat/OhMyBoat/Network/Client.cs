@@ -45,6 +45,8 @@ namespace OhMyBoat.Network
                     return;
                 }
 
+                if (Parser.Packets.Count == 0) continue;
+
                 if (_client.Available <= PacketHeader.HeaderSize) continue;
                 
                 var header = Packet.GetHeader(Reader);
