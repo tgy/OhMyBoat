@@ -39,6 +39,7 @@ namespace OhMyBoat
 
         protected override void LoadContent()
         {
+            GameDatas.GameFocus = true;
             IsMouseVisible = true;
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -117,6 +118,7 @@ namespace OhMyBoat
 
         protected override void Update(GameTime gameTime)
         {
+            GameDatas.GameFocus = IsActive;
             GameDatas.KeyboardState = Keyboard.GetState();
             GameDatas.MouseState = Mouse.GetState();
 

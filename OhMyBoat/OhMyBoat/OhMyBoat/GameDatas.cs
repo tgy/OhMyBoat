@@ -14,6 +14,7 @@ namespace OhMyBoat
 {
     static class GameDatas
     {
+        public static bool GameFocus;
         static public int WindowWidth;
         static public int WindowHeight;
 

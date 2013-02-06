@@ -16,7 +16,7 @@ namespace OhMyBoat.Network
 
         public Stream Stream
         {
-            get 
+            get
             {
                 return Connected ? _client.GetStream() : Stream.Null;
             }

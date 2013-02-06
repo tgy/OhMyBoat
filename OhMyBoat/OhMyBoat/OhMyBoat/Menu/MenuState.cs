@@ -53,6 +53,9 @@ namespace OhMyBoat.Menu
 
         public override void Update(GameTime gameTime)
         {
+            if (!GameDatas.GameFocus)
+                return;
+
             if (GameDatas.KeyboardFocus &&
                 (GameDatas.MouseState.X != GameDatas.PreviousMouseState.X ||
                  GameDatas.MouseState.Y != GameDatas.PreviousMouseState.Y))
@@ -114,6 +117,7 @@ namespace OhMyBoat.Menu
                 {
                     if (!Items[i].Area.Contains(GameDatas.MouseState.X, GameDatas.MouseState.Y)) continue;
                     if (Items[i].NoClick) break;
+
                     if (!Items[i].FocusOnClick)
                     {
                         Items[_selectedItemIndex].Focused = false;
@@ -123,6 +127,7 @@ namespace OhMyBoat.Menu
 
                     if (GameDatas.MouseState.LeftButton != ButtonState.Released ||
                         GameDatas.PreviousMouseState.LeftButton != ButtonState.Pressed) continue;
+
                     if (Items[i].FocusOnClick)
                     {
                         Items[_selectedItemIndex].Focused = false;

@@ -73,6 +73,9 @@ namespace OhMyBoat
             if (!_client.Connected)
                 _gameStates.Pop();
 
+            if (!GameDatas.GameFocus)
+                return;
+
             if (GameDatas.KeyboardFocus &&
                 (GameDatas.MouseState.X != GameDatas.PreviousMouseState.X ||
                  GameDatas.MouseState.Y != GameDatas.PreviousMouseState.Y))

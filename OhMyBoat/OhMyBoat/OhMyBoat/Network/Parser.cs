@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using OhMyBoat.Network.Packets;
 
@@ -13,10 +14,8 @@ namespace OhMyBoat.Network
         {
             var pcks = new List<BasePacket> {new BasicsDatasPacket(), new FireDatasPacket()};
 
-            foreach (var basePacket in pcks)
+            foreach (var basePacket in pcks.Where(basePacket => !Packets.ContainsKey(basePacket.OpCode)))
             {
-                if (Packets.ContainsKey(basePacket.OpCode)) continue;
-
                 basePacket.SetEventCallBack(callBackMethod);
                 Packets.Add(basePacket.OpCode, basePacket);
             }
