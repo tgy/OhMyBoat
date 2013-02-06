@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using OhMyBoat.Maps;
+using OhMyBoat.Menu;
+using OhMyBoat.Menu.MenuItems;
 using OhMyBoat.Network;
 using OhMyBoat.Network.Events;
 using OhMyBoat.Network.Packets;
@@ -22,10 +24,13 @@ namespace OhMyBoat
         private readonly Client _client;
         private readonly string _currentName;
         private bool _myTurn;
-        private readonly Stack<GameState> _gameStates; 
+        private readonly Stack<GameState> _gameStates;
 
-        public PlayState(Client client, string currentName,ref Stack<GameState> gameStates,bool begin = false)
+        private MenuState _gameOverMenuState;
+
+        public PlayState(Client client, string currentName, ref Stack<GameState> gameStates, bool begin = false)
         {
+            Parser.RegisterPackets(ManageNetworkEvents);
             _client = client;
             _currentName = currentName;
             _myTurn = begin;
@@ -37,8 +42,6 @@ namespace OhMyBoat
             _current = new Player(_currentName, Map.Generate());
             _current.Map.SetPosition(GameDatas.WindowWidth/2 - GameDatas.Theme.GridSize,
                                      GameDatas.WindowHeight - GameDatas.Theme.GridSize - 25);
-
-            Parser.RegisterPackets(ManageNetworkEvents);
 
             SendCurrentPlayer();
         }
@@ -60,9 +63,20 @@ namespace OhMyBoat
                     return;
                 case 2:
                     var fireDatas = eventDatas as FireDatasEvent;
-                    _current.Play(fireDatas.Coordinates.X, fireDatas.Coordinates.Y);
+                    if (_current.Play(fireDatas.Coordinates.X, fireDatas.Coordinates.Y) == FireResult.Fail)
+                        _myTurn = true;
                     break;
             }
+        }
+
+        public override void LoadContent(ContentManager content)
+        {
+            var quitApplicationButton = new MenuButton("Quit from OhMyBoat");
+            var gameOverPassive = new MenuPassive(GameDatas.Theme.GameOverTexture);
+            var playAgainButton = new MenuButton("Play again");
+            var gameOverItems = new List<MenuItem> {gameOverPassive, playAgainButton, quitApplicationButton};
+
+            _gameOverMenuState = new MenuState(gameOverItems, true);
         }
 
         public override void Update(GameTime gameTime)
@@ -72,6 +86,12 @@ namespace OhMyBoat
 
             if (!_client.Connected)
                 _gameStates.Pop();
+
+            if (_enemy.IsOver() || _current.IsOver())
+            {
+                _gameStates.Pop();
+                _gameStates.Push(_gameOverMenuState);
+            }
 
             if (!GameDatas.GameFocus)
                 return;
@@ -87,7 +107,7 @@ namespace OhMyBoat
 
             if (!GameDatas.KeyboardFocus &&
                 (GameDatas.KeyboardState.IsKeyDown(Keys.Right) || GameDatas.KeyboardState.IsKeyDown(Keys.Down) ||
-                 GameDatas.KeyboardState.IsKeyDown(Keys.Up) || (GameDatas.KeyboardState.IsKeyDown(Keys.Down))))
+                 GameDatas.KeyboardState.IsKeyDown(Keys.Up) || GameDatas.KeyboardState.IsKeyDown(Keys.Down) || GameDatas.KeyboardState.IsKeyDown(Keys.Enter) || GameDatas.KeyboardState.IsKeyUp(Keys.Enter)))
                 GameDatas.KeyboardFocus = true;
 
             _current.Update();
@@ -95,9 +115,13 @@ namespace OhMyBoat
 
             if ((!GameDatas.PreviousKeyboardState.IsKeyDown(Keys.Enter) || !GameDatas.KeyboardState.IsKeyUp(Keys.Enter)) &&
                 (GameDatas.KeyboardFocus || GameDatas.MouseState.LeftButton != ButtonState.Released ||
-                 GameDatas.PreviousMouseState.LeftButton != ButtonState.Pressed)) return;
+                 GameDatas.PreviousMouseState.LeftButton != ButtonState.Pressed) || !_myTurn) return;
 
-            _enemy.Play(_enemy.Map.Aim.Y, _enemy.Map.Aim.X);
+            if (!GameDatas.KeyboardFocus && !_enemy.Map.Area.Contains(GameDatas.MouseState.X, GameDatas.MouseState.Y))
+                return;
+
+            if (_enemy.Play(_enemy.Map.Aim.Y, _enemy.Map.Aim.X) == FireResult.Fail)
+                _myTurn = false;
             new FireDatasPacket().Pack(_client, new Point(_enemy.Map.Aim.Y, _enemy.Map.Aim.X));
         }
 
@@ -114,7 +138,18 @@ namespace OhMyBoat
             _current.Map.Draw(spriteBatch, true);
             _enemy.Map.Draw(spriteBatch, false);
 
-            spriteBatch.DrawString(GameDatas.Theme.GeneralFont, "Adversaire : " + _enemy.Name, new Vector2(GameDatas.WindowWidth - GameDatas.Theme.GeneralFont.MeasureString("Adversaire : " + _enemy.Name).X, 0), Color.Violet);
+            spriteBatch.DrawString(GameDatas.Theme.GeneralFont, "Adversaire : " + _enemy.Name,
+                                   new Vector2(
+                                       GameDatas.WindowWidth -
+                                       GameDatas.Theme.GeneralFont.MeasureString("Adversaire : " + _enemy.Name).X, 0),
+                                   Color.Violet);
+            spriteBatch.DrawString(GameDatas.Theme.GeneralFont, _myTurn ? "A toi de jouer, avec Bendai" : _enemy.Name + " joue",
+                                   new Vector2(
+                                       GameDatas.WindowWidth -
+                                       GameDatas.Theme.GeneralFont.MeasureString(_myTurn
+                                                                                     ? "A toi de jouer, avec Bendai"
+                                                                                     : _enemy.Name + " joue").X - 50,
+                                       150), Color.LightGreen);
         }
     }
 }

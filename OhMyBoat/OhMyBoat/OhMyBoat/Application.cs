@@ -65,13 +65,14 @@ namespace OhMyBoat
             //////////////////////////////////////////////////////////
 
             var logo = new MenuPassive(GameDatas.Theme.LogoTexture);
+            var comeBackButton = new MenuButton("Come Back :D");
 
             // CREATION MENU CREATE GAME
 
             var createNameTextBox = new MenuTextBox("What's your name?");
             var submitCreateGame = new MenuButton("Go !") {Click = CreateGame};
 
-            var createGameMenuItems = new List<MenuItem> { logo, createNameTextBox, submitCreateGame };
+            var createGameMenuItems = new List<MenuItem> {logo, createNameTextBox, submitCreateGame, comeBackButton};
             var createGameMenuState = new MenuState(createGameMenuItems, true);
             createGameMenuState.SetPositions();
             submitCreateGame.subMenu = createGameMenuState;
@@ -81,7 +82,6 @@ namespace OhMyBoat
             var joinNameTextBox = new MenuTextBox("What's your name?");
             var serverIpTextBox = new MenuTextBox("IP Server :D");
             var submitJoinGame = new MenuButton("Go !");
-            var comeBackButton = new MenuButton("Come Back :)");
 
             var joinGameMenuItems = new List<MenuItem> {logo, joinNameTextBox, serverIpTextBox, submitJoinGame, comeBackButton};
             var joinGameMenuState = new MenuState(joinGameMenuItems, true);
@@ -89,6 +89,8 @@ namespace OhMyBoat
             submitJoinGame.subMenu = joinGameMenuState;
             submitJoinGame.Click = JoinGame;
             comeBackButton.Click = _comeBack;
+
+            // CREATION MENU GAME OVER
 
             // CREATION MENU ACCUEIL
 
@@ -153,6 +155,7 @@ namespace OhMyBoat
         private void _launchMenu(MenuState m)
         {
             _gameStates.Push(m);
+            _gameStates.Peek().LoadContent(Content);
         }
 
         private void _comeBack(MenuState m)

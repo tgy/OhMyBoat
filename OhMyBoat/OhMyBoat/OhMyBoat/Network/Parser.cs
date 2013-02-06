@@ -8,7 +8,7 @@ namespace OhMyBoat.Network
 {
     static class Parser
     {
-        static readonly Dictionary<byte, BasePacket> Packets = new Dictionary<byte, BasePacket>();
+        public static readonly Dictionary<byte, BasePacket> Packets = new Dictionary<byte, BasePacket>();
 
         public static void RegisterPackets(BasePacket.CallBackMethod callBackMethod)
         {

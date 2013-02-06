@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using OhMyBoat.IO;
@@ -16,7 +16,7 @@ namespace OhMyBoat.Network
 
         public Stream Stream
         {
-            get
+            get 
             {
                 return Connected ? _client.GetStream() : Stream.Null;
             }
@@ -44,6 +44,8 @@ namespace OhMyBoat.Network
                     Connected = false;
                     return;
                 }
+
+                if (Parser.Packets.Count == 0) continue;
 
                 if (_client.Available <= PacketHeader.HeaderSize) continue;
                 

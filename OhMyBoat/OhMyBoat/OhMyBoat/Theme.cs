@@ -18,7 +18,7 @@ namespace OhMyBoat
 
         public string Name;
 
-        public Texture2D LogoTexture;
+        public Texture2D LogoTexture, GameOverTexture;
 
         public SpriteFont GeneralFont;
 
@@ -66,6 +66,8 @@ namespace OhMyBoat
             GeneralFont = content.Load<SpriteFont>("Themes/" + Name + "/GeneralFont");
             ButtonFont = content.Load<SpriteFont>("Themes/" + Name + "/ButtonFont");
             TextBoxFont = content.Load<SpriteFont>("Themes/" + Name + "/TextBoxFont");
+
+            GameOverTexture = content.Load<Texture2D>("Themes/" + Name + "/GameOverTexture");
 
             ButtonTexture = content.Load<Texture2D>("Themes/" + Name + "/ButtonTexture");
             ButtonTextureFocus = content.Load<Texture2D>("Themes/" + Name + "/ButtonTextureFocus");

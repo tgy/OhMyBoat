@@ -34,20 +34,15 @@ namespace OhMyBoat
             Map.Aim = new Point(0, 0);
         }
 
-        public string Play(int x, int y)
+        public FireResult Play(int x, int y)
         {
             if (!Shoot(x, y))
-            {
-                return "You missed the shot... I shall not say that you deeply are a sucker.";
-            }
-
+                return FireResult.Fail;
+            
             if (Sink(x, y))
-            {
                 Achieve(x, y);
-                return "You hit the target and you destroyed a boat! You can be pride of yourself.";
-            }
-
-            return "You hit the target! Well done!";
+            
+            return FireResult.Shoot;
         }
 
         public void Update()
@@ -175,5 +170,11 @@ namespace OhMyBoat
 
             return false;
         }
+    }
+
+    public enum FireResult
+    {
+        Fail,
+        Shoot
     }
 }
