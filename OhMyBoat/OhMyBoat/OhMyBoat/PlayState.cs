@@ -75,6 +75,7 @@ namespace OhMyBoat
             var gameOverItems = new List<MenuItem> {gameOverPassive};
 
             _gameOverMenuState = new MenuState(gameOverItems, true);
+            _gameOverMenuState.SetPositions();
         }
 
         public override void Update(GameTime gameTime)
@@ -87,7 +88,9 @@ namespace OhMyBoat
 
             if (_enemy.IsOver() || _current.IsOver())
             {
+                _gameStates.Pop();
                 _gameStates.Push(_gameOverMenuState);
+                return;
             }
 
             if (!GameDatas.GameFocus)
